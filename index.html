@@ -1,0 +1,1028 @@
+<div style="min-width: 1250px; width: 100%; overflow-x: auto; background-color: #020c1b; padding: 10px; border-radius: 12px;">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Middle School Kagan Control Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #020c1b;
+            --bg-card: #0a192f;
+            --bg-inner: #112240;
+            --teal: #64ffda;
+            --text-light: #e6f1ff;
+            --text-muted: #8892b0;
+            --accent: #00d2ff;
+            --pink: #ff69b4;
+            --green: #4ade80;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 360px 1fr 360px;
+            gap: 20px;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; }
+        p { margin: 0 0 10px 0; color: var(--text-muted); line-height: 1.5; }
+
+        .panel {
+            background-color: var(--bg-card);
+            border: 1px solid #233554;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: transparent;
+            color: var(--teal);
+            border: 2px solid var(--teal);
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn:hover { background-color: rgba(100, 255, 218, 0.1); transform: translateY(-1px); }
+        
+        .tab-nav .btn.active { 
+            background-color: var(--teal) !important; 
+            color: #000000 !important; 
+            font-weight: 700 !important; 
+            border-color: var(--teal) !important;
+        }
+
+        .goal-nav .btn.active {
+            background-color: var(--accent) !important;
+            color: #000000 !important;
+            font-weight: 700 !important;
+            border-color: var(--accent) !important;
+        }
+
+        .structure-nav .btn.active {
+            background-color: transparent !important;
+            color: var(--teal) !important;
+            border-color: var(--teal) !important;
+            box-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
+        }
+
+        .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
+        
+        .giant-prompt-display {
+            background-color: #112240;
+            border: 2px dashed #233554;
+            border-radius: 10px;
+            padding: 22px;
+            text-align: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .giant-prompt-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+            word-wrap: break-word;
+        }
+
+        .live-output-box {
+            background-color: var(--bg-inner);
+            border: 1px solid #233554;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .live-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 4px; display: block; font-weight: bold;}
+        .live-value { font-size: 1.1rem; font-weight: bold; color: #fff; min-height: 24px; line-height: 1.3;}
+
+        .mat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background-color: var(--bg-inner);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed #233554;
+            text-align: center;
+        }
+        .seat {
+            background-color: var(--bg-card);
+            padding: 10px 4px;
+            border-radius: 6px;
+            border: 1px solid #233554;
+        }
+        .seat.highlight {
+            border-color: var(--teal);
+            box-shadow: 0 0 10px rgba(100,255,218,0.3);
+            background-color: rgba(100, 255, 218, 0.05);
+        }
+        .seat-num { font-size: 1.3rem; font-weight: bold; color: #fff; }
+        .seat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        .roster-area {
+            width: 100%;
+            height: 80px;
+            background-color: var(--bg-inner);
+            color: #fff;
+            border: 1px solid #233554;
+            border-radius: 6px;
+            padding: 8px;
+            resize: none;
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+
+        .main-content { display: grid; grid-template-rows: auto auto auto auto auto 1fr; gap: 20px; }
+
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #233554;
+            padding-bottom: 15px;
+        }
+
+        .tab-nav, .goal-nav, .structure-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid #233554;
+            padding-bottom: 12px;
+        }
+
+        .step-card {
+            background-color: var(--bg-inner);
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid var(--teal);
+        }
+
+        .goal-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .goal-pink { background-color: rgba(255, 105, 180, 0.15); color: var(--pink); border: 1px solid var(--pink); }
+        .goal-green { background-color: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid var(--green); }
+
+        #smart-suggestion-badge {
+            font-size: 0.75rem;
+            background: rgba(0, 210, 255, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .timer-module {
+            background-color: var(--bg-inner);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #233554;
+            gap: 12px;
+        }
+        .timers-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        .individual-timer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #233554;
+            transition: all 0.3s ease;
+        }
+        .individual-timer-row.active {
+            border-color: var(--accent);
+            background: rgba(0, 210, 255, 0.05);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.1);
+        }
+        .individual-timer-row.think-time-row.active {
+            border-color: var(--pink);
+            background: rgba(255, 105, 180, 0.05);
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.1);
+        }
+        .timer-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .individual-timer-row.active .timer-label { color: #fff; }
+        .timer-display {
+            font-size: 1.8rem;
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            color: var(--text-muted);
+        }
+        .individual-timer-row.active .timer-display { color: var(--accent); }
+        .individual-timer-row.think-time-row.active .timer-display { color: var(--pink); }
+        
+        .timer-adjust-btn {
+            background-color: rgba(100, 255, 218, 0.05);
+            border: 1px solid #233554;
+            color: var(--teal);
+            font-size: 0.9rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .timer-adjust-btn:hover { background-color: rgba(100, 255, 218, 0.15); border-color: var(--teal); }
+        .timer-controls { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .control-row { display: flex; gap: 10px; width: 100%; }
+
+        .question-module {
+            background-color: var(--bg-inner);
+            border: 1px solid #233554;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .question-input-area {
+            width: 100%;
+            height: 90px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            border: 1px solid #233554;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.9rem;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .audio-menu-dropdown {
+            background-color: var(--bg-inner);
+            color: var(--teal);
+            border: 1px solid var(--teal);
+            border-radius: 6px;
+            padding: 8px;
+            font-size: 0.85rem;
+            width: 100%;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .interval-stepper-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid #233554;
+            border-radius: 6px;
+            padding: 6px 12px;
+            width: 100%;
+        }
+
+        .descriptor-subtext {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: -8px;
+            font-style: italic;
+        }
+
+        .spin-anim { animation: text-pulse 0.1s infinite alternate; }
+        @keyframes text-pulse { from { opacity: 0.5; transform: scale(0.98); } to { opacity: 1; transform: scale(1.02); } }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    
+    <div class="sidebar panel">
+        <div>
+            <h3><i class="fa-solid fa-sliders"></i> Smart Selectors</h3>
+            <p style="font-size: 0.8rem; margin: 0;">Participation and team assignments context engine.</p>
+        </div>
+
+        <div class="live-output-box" style="border-left: 3px solid var(--accent); background-color: rgba(0,210,255,0.03);">
+            <span class="live-label"><i class="fa-solid fa-user-tag"></i> Active Presenter Assignment</span>
+            <div class="live-value" id="live-presenter-box" style="color: var(--accent); font-size: 1.2rem;">---</div>
+        </div>
+
+        <div class="live-output-box" style="border-left: 3px solid var(--teal);">
+            <span class="live-label"><i class="fa-solid fa-volume-high"></i> Active Voice Level Target</span>
+            <div class="live-value" id="live-voice-box" style="color: var(--teal);">Level 0: Perfect Silence</div>
+        </div>
+
+        <div class="live-output-box" style="border-left: 3px solid var(--pink);">
+            <span class="live-label"><i class="fa-solid fa-gift"></i> Team Praise Tracking</span>
+            <div class="live-value" id="live-praise-box" style="color: var(--pink);">---</div>
+        </div>
+
+        <div>
+            <h4 style="margin-bottom: 8px; font-size: 0.9rem;">Interactive Team Mat</h4>
+            <div class="mat-grid" id="mat-grid">
+                <div class="seat" id="seat-1"><div class="seat-num">1</div><div class="seat-label">Partner A</div></div>
+                <div class="seat" id="seat-2"><div class="seat-num">2</div><div class="seat-label">Partner A</div></div>
+                <div class="seat" id="seat-3"><div class="seat-num">3</div><div class="seat-label">Partner B</div></div>
+                <div class="seat" id="seat-4"><div class="seat-num">4</div><div class="seat-label">Partner B</div></div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+            <button class="btn btn-sm" onclick="triggerRndSeat()"><i class="fa-solid fa-dice"></i> Seat (1-4)</button>
+            <button class="btn btn-sm" onclick="triggerRndPartner()"><i class="fa-solid fa-user-group"></i> Partner (A/B)</button>
+        </div>
+        <button class="btn btn-sm" onclick="triggerRndStudent()"><i class="fa-solid fa-shuffle"></i> Pull Random Student</button>
+
+        <div>
+            <h4 style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fa-solid fa-users-line"></i> Class Roster Hub</h4>
+            <textarea id="roster-box" class="roster-area" placeholder="Paste names here...">Davis, M.&#10;Gomez, E.&#10;Jackson, T.&#10;Miller, B.&#10;Nguyen, K.&#10;O'Bryan, L.&#10;Smith, J.&#10;Wilson, A.</textarea>
+        </div>
+    </div>
+
+    <div class="main-content panel">
+        <div class="top-navbar">
+            <div>
+                <h2>Kagan Control Center</h2>
+                <p style="margin: 0; font-size: 0.9rem;">Middle School Division • Engagement Strategy Architecture</p>
+            </div>
+            <button class="btn" style="border-color: #ff6b6b; color: #ff6b6b;" onclick="triggerQuietSignal()">
+                <i class="fa-solid fa-hand-paper"></i> Signal Focus (Quiet Cues)
+            </button>
+        </div>
+
+        <div class="giant-prompt-display">
+            <span class="live-label" style="margin-bottom: 8px; color: var(--teal); font-weight: bold;"><i class="fa-solid fa-bullhorn"></i> Current Focus Prompt</span>
+            <div class="giant-prompt-text" id="classroom-giant-prompt-lbl">WAITING FOR TEACHER INPUT...</div>
+        </div>
+
+        <div class="tab-nav" id="group-tabs">
+            <button class="btn active" onclick="setGrouping('pair')">Pair Structures</button>
+            <button class="btn" onclick="setGrouping('team')">Team Structures</button>
+        </div>
+
+        <div>
+            <div class="goal-nav" id="goal-tabs" style="border-bottom: none; padding-bottom: 5px;">
+                <button class="btn active" onclick="setObjective('ANSWER')">Answer Correctly</button>
+                <button class="btn" onclick="setObjective('SHARE')">Share Information</button>
+            </div>
+            <div id="objective-descriptor-lbl" class="descriptor-subtext">Solve problems, recall facts, perform skills.</div>
+        </div>
+
+        <div class="structure-nav" id="structure-tabs"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+            <h3 id="struct-title">---</h3>
+            <p id="struct-desc">---</p>
+            
+            <div class="step-card">
+                <span id="struct-goal" class="goal-tag">---</span>
+                <h4 style="color:#fff; margin-bottom: 8px;">Structure Roadmap</h4>
+                <div id="struct-steps"></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+        <div class="timer-module panel">
+            <h4 style="color: var(--accent); margin-bottom: 2px;"><i class="fa-solid fa-stopwatch"></i> Sequence Loop</h4>
+            <p style="font-size:0.8rem; text-align:center; margin:0; color: var(--text-muted);">Includes 15s initial Think-Time segments.</p>
+            
+            <div class="interval-stepper-container">
+                <span class="timer-label" style="font-size:0.8rem; color:#fff;">Total Intervals:</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="timer-adjust-btn" onclick="modifyIntervalTotalCount(-1)"><i class="fa-solid fa-minus"></i></button>
+                    <strong id="manual-interval-value-lbl" style="font-family:'Poppins', sans-serif; font-size:1.1rem; color:var(--accent);">2</strong>
+                    <button class="timer-adjust-btn" onclick="modifyIntervalTotalCount(1)"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+
+            <div class="timers-container" id="timers-container"></div>
+
+            <div class="timer-controls">
+                <div class="control-row">
+                    <button class="btn btn-sm" style="flex:1;" id="start-pause-btn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> Start</button>
+                    <button class="btn btn-sm" style="border-color:#ff6b6b; color:#ff6b6b;" onclick="resetTimer()"><i class="fa-solid fa-undo"></i> Reset</button>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 5px; width: 100%;">
+                    <span class="live-label" style="text-align: left;">Audio Track Mixer</span>
+                    <select id="ambient-menu" class="audio-menu-dropdown" onchange="changeAmbientTrack()">
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Option 1: Chill-Hop LoFi Stream</option>
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Option 2: Coffeehouse Acoustic Jazz</option>
+                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">Option 3: Smooth Atmospheric Ambient</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-sm" style="border-color: var(--pink); color: var(--pink); width: 100%; margin-top: 2px;" id="mute-btn" onclick="toggleMute()">
+                    <i class="fa-solid fa-volume-high"></i> Music Status: Playing
+                </button>
+            </div>
+        </div>
+
+        <div class="question-module panel" style="gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
+                <h4 style="font-size: 0.95rem; color: var(--pink);"><i class="fa-solid fa-pen-to-square"></i> Prompt Engine</h4>
+                <button class="btn btn-sm" style="padding: 3px 8px; font-size: 0.75rem;" onclick="clearResults()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
+            </div>
+            <textarea id="teacher-question" class="question-input-area" onkeyup="analyzeTeacherQuestion(this.value)" placeholder="Type lesson query text parameters here to auto-detect optimal frameworks and update classroom display live..."></textarea>
+            <div id="smart-suggestion-badge" style="display:none; font-size:0.75rem; justify-content: center; width:100%; padding:6px;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const structureMatrix = {
+        pair: {
+            ANSWER: ['paircoach', 'rallycoach'],
+            SHARE: ['pairshare', 'timedpairshare', 'rallyrobin']
+        },
+        team: {
+            ANSWER: ['teamcoach', 'roundrobinconsensus'],
+            SHARE: ['singleroundrobin', 'timedroundrobin', 'continuousroundrobin']
+        }
+    };
+
+    const structures = {
+        paircoach: { 
+            title: "Pair Coach", 
+            goal: "ANSWER", 
+            type: "pair", 
+            desc: "One partner answers or performs.", 
+            defaultTime: 60, 
+            defaultIntervals: 2, 
+            steps: [
+                "Step 1: The teacher assigns a task or problem. One partner is designated as the \"Player\" and the other as the \"Coach.\"", 
+                "Step 2: The Player answers the question or performs the task aloud.", 
+                "Step 3: The Coach watches, listens, checks for accuracy, offers guidance if needed, and provides praise when completed.", 
+                "Step 4: Roles reverse for the next specific task or segment."
+            ] 
+        },
+        rallycoach: { 
+            title: "Rally Coach", 
+            goal: "ANSWER", 
+            type: "pair", 
+            desc: "Partners take multiple turns.", 
+            defaultTime: 90, 
+            defaultIntervals: 2, 
+            steps: [
+                "Step 1: Partner A solves a problem or answers a question aloud.", 
+                "Step 2: Partner B listens carefully, checks the answer, coaches Partner A if an error is made, and praises the correct effort.", 
+                "Step 3: Partner B solves the next problem or answers the next question aloud.", 
+                "Step 4: Partner A listens, checks, coaches if necessary, and praises.",
+                "Step 5: Partners continue to alternate roles back and forth for the remaining problems."
+            ] 
+        },
+        pairshare: { 
+            title: "Pair Share", 
+            goal: "SHARE", 
+            type: "pair", 
+            desc: "Both partners share a short response.", 
+            defaultTime: 45, 
+            defaultIntervals: 2, 
+            steps: [
+                "Step 1: The teacher provides a prompt and allows a moment of individual think time.", 
+                "Step 2: Partner A shares their response or thoughts with Partner B.", 
+                "Step 3: Partner B shares their response or thoughts with Partner A."
+            ] 
+        },
+        timedpairshare: { 
+            title: "Timed Pair Share", 
+            goal: "SHARE", 
+            type: "pair", 
+            desc: "Both partners share a timed response.", 
+            defaultTime: 60, 
+            defaultIntervals: 2, 
+            steps: [
+                "Step 1: The teacher poses a question and specifies a time limit (e.g., 60 seconds per person).", 
+                "Step 2: Partner A shares for the entire designated time while Partner B listens actively without interrupting.", 
+                "Step 3: The teacher calls time, and Partner B gives a specific compliment or thank-you to Partner A.", 
+                "Step 4: Roles switch. Partner B shares for the same amount of time while A listens.",
+                "Step 5: Partner A gives a specific compliment or thank-you to Partner B."
+            ] 
+        },
+        rallyrobin: { 
+            title: "Rally Robin", 
+            goal: "SHARE", 
+            type: "pair", 
+            desc: "Partners take multiple turns.", 
+            defaultTime: 15, 
+            defaultIntervals: 2, 
+            steps: [
+                "Step 1: The teacher provides a topic or prompt that has multiple short answers, a list of items, or brief ideas.", 
+                "Step 2: Partner A shares one short response or idea.", 
+                "Step 3: Partner B shares one short response or idea.", 
+                "Step 4: Partners continue to alternate rapidly back and forth (A, B, A, B) until the teacher calls time."
+            ] 
+        },
+        teamcoach: { 
+            title: "Team Coach", 
+            goal: "ANSWER", 
+            type: "team", 
+            desc: "One teammate answers or performs.", 
+            defaultTime: 90, 
+            defaultIntervals: 4, 
+            steps: [
+                "Step 1: One teammate is designated to answer a question or perform a task for the team.", 
+                "Step 2: This individual teammate works through the task aloud.", 
+                "Step 3: The other three teammates act as \"Coaches\"—they listen, check for understanding, provide hints if the teammate gets stuck, and celebrate the correct outcome.", 
+                "Step 4: The \"Player\" role rotates to a new teammate for the next task."
+            ] 
+        },
+        roundrobinconsensus: { 
+            title: "Round Robin Consensus", 
+            goal: "ANSWER", 
+            type: "team", 
+            desc: "Each teammate answers and other teammates check.", 
+            defaultTime: 120, 
+            defaultIntervals: 4, 
+            steps: [
+                "Step 1: Teammate 1 shares an answer or idea regarding a problem.", 
+                "Step 2: The team discusses the answer to ensure everyone agrees, clarifies misconceptions, or modifies the response.", 
+                "Step 3: Once a team consensus is reached, all teammates write the agreed-upon answer on their individual papers.", 
+                "Step 4: The rotation moves to Teammate 2 to pitch the next answer, repeating the consensus cycle."
+            ] 
+        },
+        singleroundrobin: { 
+            title: "Single Round Robin", 
+            goal: "SHARE", 
+            type: "team", 
+            desc: "Each teammate shares a short response.", 
+            defaultTime: 45, 
+            defaultIntervals: 4, 
+            steps: [
+                "Step 1: The teacher poses a question or prompt.", 
+                "Step 2: Teammate 1 shares their short response.", 
+                "Step 3: Moving clockwise, Teammate 2 shares their response.", 
+                "Step 4: Teammate 3 shares their response.",
+                "Step 5: Teammate 4 shares their response, ending the single rotation around the table."
+            ] 
+        },
+        timedroundrobin: { 
+            title: "Timed Round Robin", 
+            goal: "SHARE", 
+            type: "team", 
+            desc: "Each teammate shares a timed response.", 
+            defaultTime: 60, 
+            defaultIntervals: 4, 
+            steps: [
+                "Step 1: The teacher poses a question and announces a set time limit per person (e.g., 30 seconds).", 
+                "Step 2: Teammate 1 shares for the full time limit while the rest of the team listens.", 
+                "Step 3: The timer sounds, and the team gives a quick cheer or word of appreciation.", 
+                "Step 4: The timer resets, and Teammate 2 shares. The process repeats sequentially for Teammates 3 and 4."
+            ] 
+        },
+        continuousroundrobin: { 
+            title: "Continuous Round Robin", 
+            goal: "SHARE", 
+            type: "team", 
+            desc: "Each teammate takes multiple turns.", 
+            defaultTime: 45, 
+            defaultIntervals: 4, 
+            steps: [
+                "Step 1: The teacher poses a prompt that allows for extensive brainstorming or multiple responses.", 
+                "Step 2: Teammate 1 shares one brief answer or idea.", 
+                "Step 3: Moving clockwise, Teammates 2, 3, and 4 each share one brief answer in turn.", 
+                "Step 4: Instead of stopping after Teammate 4, the rotation immediately returns to Teammate 1.",
+                "Step 5: The team continues to cycle through the numbers (1, 2, 3, 4, 1, 2, 3, 4...) adding ideas until the teacher calls time."
+            ] 
+        }
+    };
+
+    const praises = [
+        "Give your partner a High Five!", 
+        "Trigger a 'Fantastic Cheer' (Form an F with fingers, whisper *Fantastic*)", 
+        "Give partner a 'Truck Driver Cheer' (*Honk Honk, Good Job!*)",
+        "Give a 'Looking Good Cheer' (Thumb guns up, point and say *Looking Good!*)"
+    ];
+
+    let activeGrouping = 'pair';
+    let activeObjective = 'ANSWER';
+    let currentStructureTab = '';
+    
+    let configuredTimerCount = 2;
+    let activeTimerIndex = 0; 
+    let timerDurations = []; 
+    let timerLabels = [];
+    let timerInterval = null;
+    let isTimerRunning = false;
+    let isMusicMuted = false;
+
+    let classroomMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
+    classroomMusic.loop = true;
+
+    let audioCtx = null;
+    function initAudioContext() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function changeAmbientTrack() {
+        const selectedSrc = document.getElementById('ambient-menu').value;
+        const wasPlaying = isTimerRunning && activeTimerIndex > 0;
+        
+        classroomMusic.pause();
+        classroomMusic = new Audio(selectedSrc);
+        classroomMusic.loop = true;
+        
+        if (wasPlaying && !isMusicMuted) {
+            classroomMusic.volume = 0.15;
+            classroomMusic.play().catch(e => console.log("Audio track loop held."));
+        }
+    }
+
+    function startLofiMusic() {
+        if (activeTimerIndex > 0 && isTimerRunning && !isMusicMuted) {
+            classroomMusic.volume = 0.15; 
+            classroomMusic.play().catch(e => console.log("Audio pipeline safely held context."));
+        }
+    }
+
+    function stopLofiMusic() { classroomMusic.pause(); }
+
+    function toggleMute() {
+        const muteBtn = document.getElementById('mute-btn');
+        if (isMusicMuted) {
+            isMusicMuted = false;
+            muteBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i> Music Status: Playing`;
+            muteBtn.style.borderColor = "var(--pink)";
+            muteBtn.style.color = "var(--pink)";
+            if (isTimerRunning && activeTimerIndex > 0) startLofiMusic();
+        } else {
+            isMusicMuted = true;
+            muteBtn.innerHTML = `<i class="fa-solid fa-volume-xmark"></i> Music Status: MUTED`;
+            muteBtn.style.borderColor = "var(--text-muted)";
+            muteBtn.style.color = "var(--text-muted)";
+            stopLofiMusic();
+        }
+    }
+
+    function updateSynchronizedPresenterHUD() {
+        const presenterBox = document.getElementById('live-presenter-box');
+        clearHighlights();
+
+        if (!isTimerRunning && activeTimerIndex === 0) {
+            presenterBox.innerText = "---";
+            return;
+        }
+
+        if (activeTimerIndex === 0) {
+            presenterBox.innerText = "Perfect Silence";
+            return;
+        }
+
+        const adjustedTurnIndex = activeTimerIndex - 1;
+        const currentMode = structures[currentStructureTab] || { type: 'pair' };
+
+        if (currentMode.type === 'pair') {
+            if (adjustedTurnIndex % 2 === 0) {
+                presenterBox.innerText = "Partner A";
+                document.getElementById('seat-1').classList.add('highlight');
+                document.getElementById('seat-2').classList.add('highlight');
+            } else {
+                presenterBox.innerText = "Partner B";
+                document.getElementById('seat-3').classList.add('highlight');
+                document.getElementById('seat-4').classList.add('highlight');
+            }
+        } else {
+            const targetSeatNum = (adjustedTurnIndex % 4) + 1;
+            presenterBox.innerText = `Seat Number ${targetSeatNum}`;
+            document.getElementById(`seat-${targetSeatNum}`).classList.add('highlight');
+        }
+    }
+
+    function triggerQuietSignal() { 
+        initAudioContext();
+        document.getElementById('live-voice-box').innerText = "Level 0: Perfect Silence";
+        let now = audioCtx.currentTime;
+
+        for(let i = 0; i < 3; i++) {
+            let strikeOffset = i * 1.1;
+            let osc1 = audioCtx.createOscillator(); let gain1 = audioCtx.createGain();
+            osc1.type = 'sine'; osc1.frequency.setValueAtTime(659.25, now + strikeOffset); 
+            gain1.gain.setValueAtTime(0.35, now + strikeOffset); gain1.gain.exponentialRampToValueAtTime(0.001, now + strikeOffset + 0.8);
+            osc1.connect(gain1); gain1.connect(audioCtx.destination); osc1.start(now + strikeOffset); osc1.stop(now + strikeOffset + 0.9);
+
+            let osc2 = audioCtx.createOscillator(); let gain2 = audioCtx.createGain();
+            osc2.type = 'sine'; osc2.frequency.setValueAtTime(523.25, now + strikeOffset + 0.3); 
+            gain2.gain.setValueAtTime(0.35, now + strikeOffset + 0.3); gain2.gain.exponentialRampToValueAtTime(0.001, now + strikeOffset + 1.3);
+            osc2.connect(gain2); gain2.connect(audioCtx.destination); osc2.start(now + strikeOffset + 0.3); osc2.stop(now + strikeOffset + 1.4);
+        }
+    }
+
+    function updateLiveVoiceHUD() {
+        const voiceBox = document.getElementById('live-voice-box');
+        if (activeTimerIndex === 0 && isTimerRunning) {
+            voiceBox.innerText = "Level 0: Perfect Silence (Think Time)"; voiceBox.style.color = "var(--pink)"; return;
+        }
+        if (activeGrouping === 'pair') {
+            voiceBox.innerText = "Level 1: Whisper Voices (Pair Shares)"; voiceBox.style.color = "var(--teal)";
+        } else {
+            voiceBox.innerText = "Level 2: Table Talk (Team Consensus)"; voiceBox.style.color = "var(--accent)";
+        }
+    }
+
+    function analyzeTeacherQuestion(text) {
+        const displayBox = document.getElementById('classroom-giant-prompt-lbl');
+        
+        if(text && text.trim().length > 0) {
+            displayBox.innerText = text.toUpperCase();
+        } else {
+            displayBox.innerText = "WAITING FOR TEACHER INPUT...";
+        }
+
+        const badge = document.getElementById('smart-suggestion-badge');
+        if (!text || text.trim().length < 5) { badge.style.display = 'none'; return; }
+
+        const lowerText = text.toLowerCase();
+        let decisionGoal = "SHARE"; let predictedKey = "timedpairshare"; 
+
+        const objectiveKeywords = ['calculate', 'solve', 'simplify', 'compute', 'fraction', 'ratio', 'equation', 'true', 'false', 'define', 'identify', 'mineral', 'molecule'];
+        const brainstormingKeywords = ['list', 'brainstorm', 'rapid', 'bounce ideas', 'discuss', 'opinion'];
+
+        let objectiveScore = 0; objectiveKeywords.forEach(kw => { if (lowerText.includes(kw)) objectiveScore += 2; });
+        let shareScore = 0; brainstormingKeywords.forEach(kw => { if (lowerText.includes(kw)) shareScore += 2; });
+
+        if (objectiveScore > shareScore) {
+            decisionGoal = "ANSWER"; predictedKey = (activeGrouping === 'pair') ? 'rallycoach' : 'roundrobinconsensus';
+        } else {
+            decisionGoal = "SHARE";
+            let isBrainstorm = brainstormingKeywords.some(kw => lowerText.includes(kw));
+            predictedKey = isBrainstorm ? ((activeGrouping === 'pair') ? 'rallyrobin' : 'continuousroundrobin') : ((activeGrouping === 'pair') ? 'timedpairshare' : 'timedroundrobin');
+        }
+
+        badge.style.display = 'inline-flex';
+        badge.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Match: ${structures[predictedKey].title}`;
+        setObjective(decisionGoal); selectStructure(predictedKey);
+    }
+
+    function triggerBeepSound() {
+        initAudioContext(); const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(810, audioCtx.currentTime); gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    window.onload = function() { renderFilterMatrix(); updateLiveVoiceHUD(); };
+
+    function setGrouping(groupKey) {
+        activeGrouping = groupKey;
+        const buttons = document.getElementById('group-tabs').getElementsByTagName('button');
+        buttons[0].className = `btn ${groupKey === 'pair' ? 'active' : ''}`;
+        buttons[1].className = `btn ${groupKey === 'team' ? 'active' : ''}`;
+        renderFilterMatrix(); updateLiveVoiceHUD();
+    }
+
+    function setObjective(objKey) {
+        activeObjective = objKey;
+        const buttons = document.getElementById('goal-tabs').getElementsByTagName('button');
+        const descLbl = document.getElementById('objective-descriptor-lbl');
+        
+        buttons[0].className = `btn ${objKey === 'ANSWER' ? 'active' : ''}`;
+        buttons[1].className = `btn ${objKey === 'SHARE' ? 'active' : ''}`;
+        
+        if (objKey === 'ANSWER') {
+            descLbl.innerText = "Solve problems, recall facts, perform skills.";
+        } else {
+            descLbl.innerText = "Share ideas, state opinions, explain thinking.";
+        }
+        
+        renderFilterMatrix();
+    }
+
+    function renderFilterMatrix() {
+        const targetKeys = structureMatrix[activeGrouping][activeObjective];
+        const container = document.getElementById('structure-tabs'); container.innerHTML = '';
+
+        targetKeys.forEach((key) => {
+            const btn = document.createElement('button'); btn.className = 'btn btn-sm';
+            btn.innerText = structures[key].title; btn.onclick = () => selectStructure(key);
+            container.appendChild(btn);
+        });
+        if(targetKeys.length > 0 && !currentStructureTab) { selectStructure(targetKeys[0]); }
+    }
+
+    function selectStructure(key) {
+        currentStructureTab = key;
+        const struct = structures[key];
+        const tabs = document.getElementById('structure-tabs').getElementsByTagName('button');
+        const targetKeys = structureMatrix[activeGrouping][activeObjective];
+        
+        targetKeys.forEach((structKey, idx) => {
+            if(tabs[idx]) tabs[idx].className = `btn btn-sm ${structKey === key ? 'active' : ''}`;
+        });
+
+        document.getElementById('struct-title').innerText = struct.title;
+        document.getElementById('struct-desc').innerText = struct.desc;
+        
+        const goalTag = document.getElementById('struct-goal');
+        if(struct.goal === "SHARE") {
+            goalTag.innerText = "SHARE INFORMATION"; goalTag.className = "goal-tag goal-pink";
+        } else {
+            goalTag.innerText = "ANSWER CORRECTLY"; goalTag.className = "goal-tag goal-green";
+        }
+
+        const stepsC = document.getElementById('struct-steps');
+        stepsC.innerHTML = struct.steps.map(s => `<p style="color:#e6f1ff; margin-bottom:8px;">${s}</p>`).join('');
+
+        configuredTimerCount = struct.defaultIntervals;
+        document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
+        buildSequentialTimerArrays(struct.defaultTime);
+    }
+
+    function modifyIntervalTotalCount(delta) {
+        let proposed = configuredTimerCount + delta;
+        if (proposed < 1) proposed = 1;
+        if (proposed > 8) proposed = 8; 
+        
+        configuredTimerCount = proposed;
+        document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
+        
+        const baseCurrentDuration = timerDurations[1] || 60;
+        buildSequentialTimerArrays(baseCurrentDuration);
+    }
+
+    function buildSequentialTimerArrays(baseTimePerInterval) {
+        if(isTimerRunning) toggleTimer();
+        
+        timerDurations = [15]; 
+        timerLabels = ["Think Time"];
+
+        for(let i = 0; i < configuredTimerCount; i++) {
+            timerDurations.push(baseTimePerInterval);
+            timerLabels.push(`Interval #${i + 1}`);
+        }
+
+        activeTimerIndex = 0;
+        renderTimerRows();
+        updateLiveVoiceHUD();
+        updateSynchronizedPresenterHUD();
+    }
+
+    function renderTimerRows() {
+        const container = document.getElementById('timers-container');
+        container.innerHTML = '';
+
+        timerDurations.forEach((duration, i) => {
+            const row = document.createElement('div');
+            row.id = `timer-row-${i}`;
+            row.className = `individual-timer-row ${i === 0 ? 'think-time-row' : ''} ${i === activeTimerIndex ? 'active' : ''}`;
+            
+            const mins = Math.floor(duration / 60).toString().padStart(2, '0');
+            const secs = (duration % 60).toString().padStart(2, '0');
+
+            row.innerHTML = `
+                <div class="timer-label">${timerLabels[i]}</div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, -5)"><i class="fa-solid fa-minus"></i></button>
+                    <div class="timer-display" id="display-${i}">${mins}:${secs}</div>
+                    <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, 5)"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    function adjustSpecificTime(index, amount) {
+        if(timerDurations[index] + amount < 0) { 
+            timerDurations[index] = 0; 
+        } else { 
+            timerDurations[index] += amount; 
+        }
+        
+        if (index === 1) {
+            for (let i = 2; i < timerDurations.length; i++) {
+                timerDurations[i] = timerDurations[1];
+            }
+        }
+        
+        timerDurations.forEach((duration, idx) => {
+            const mins = Math.floor(duration / 60).toString().padStart(2, '0');
+            const secs = (duration % 60).toString().padStart(2, '0');
+            const elem = document.getElementById(`display-${idx}`);
+            if (elem) elem.innerText = `${mins}:${secs}`;
+        });
+    }
+
+    function toggleTimer() {
+        const btn = document.getElementById('start-pause-btn');
+        if(isTimerRunning) {
+            clearInterval(timerInterval); isTimerRunning = false;
+            btn.innerHTML = `<i class="fa-solid fa-play"></i> Start`;
+            stopLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+        } else {
+            isTimerRunning = true; btn.innerHTML = `<i class="fa-solid fa-pause"></i> Pause`;
+            startLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+            
+            timerInterval = setInterval(() => {
+                if(timerDurations[activeTimerIndex] > 0) {
+                    timerDurations[activeTimerIndex]--;
+                    updateLiveRowDisplay(activeTimerIndex);
+                } else {
+                    triggerBeepSound(); advanceToNextTimer();
+                }
+            }, 1000);
+        }
+    }
+
+    function advanceToNextTimer() {
+        document.getElementById(`display-${activeTimerIndex}`).innerText = "DONE!";
+        document.getElementById(`timer-row-${activeTimerIndex}`).classList.remove('active');
+        
+        if(activeTimerIndex + 1 < timerDurations.length) {
+            activeTimerIndex++; document.getElementById(`timer-row-${activeTimerIndex}`).classList.add('active');
+            startLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+        } else {
+            clearInterval(timerInterval); isTimerRunning = false;
+            document.getElementById('start-pause-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start`;
+            stopLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+            
+            const finalPraise = praises[Math.floor(Math.random() * praises.length)];
+            document.getElementById('live-praise-box').innerText = finalPraise;
+        }
+    }
+
+    function updateLiveRowDisplay(idx) {
+        const mins = Math.floor(timerDurations[idx] / 60).toString().padStart(2, '0');
+        const secs = (timerDurations[idx] % 60).toString().padStart(2, '0');
+        document.getElementById(`display-${idx}`).innerText = `${mins}:${secs}`;
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval); isTimerRunning = false;
+        document.getElementById('start-pause-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start`;
+        document.getElementById('live-praise-box').innerText = "---"; stopLofiMusic();
+        
+        const struct = structures[currentStructureTab];
+        buildSequentialTimerArrays(struct ? struct.defaultTime : 60);
+    }
+
+    function clearResults() { 
+        document.getElementById('teacher-question').value = ''; 
+        document.getElementById('classroom-giant-prompt-lbl').innerText = 'WAITING FOR TEACHER INPUT...';
+        document.getElementById('smart-suggestion-badge').style.display = 'none';
+    }
+    
+    function clearHighlights() { document.querySelectorAll('.seat').forEach(s => s.classList.remove('highlight')); }
+    
+    function runMockAnimation(targetId, finalArray, callback) {
+        const val = document.getElementById(targetId); val.classList.add('spin-anim'); clearHighlights();
+        let iterations = 0;
+        const interval = setInterval(() => { val.innerText = finalArray[Math.floor(Math.random() * finalArray.length)]; iterations++; if(iterations > 10) { clearInterval(interval); val.classList.remove('spin-anim'); callback(); } }, 60);
+    }
+
+    function triggerRndStudent() { 
+        const raw = document.getElementById('roster-box').value.split('\n').map(n => n.trim()).filter(n => n); if(raw.length === 0) return alert("Roster empty!");
+        runMockAnimation("live-presenter-box", raw, () => { document.getElementById('live-presenter-box').innerText = raw[Math.floor(Math.random() * raw.length)]; }); 
+    }
+    function triggerRndSeat() { const numbers = ["Seat 1", "Seat 2", "Seat 3", "Seat 4"]; runMockAnimation("live-presenter-box", numbers, () => { const idx = Math.floor(Math.random() * 4) + 1; document.getElementById('live-presenter-box').innerText = "Seat Number " + idx; document.getElementById(`seat-${idx}`).classList.add('highlight'); }); }
+    function triggerRndPartner() { const partners = ["Partner A", "Partner B"]; runMockAnimation("live-presenter-box", partners, () => { const choice = partners[Math.floor(Math.random() * partners.length)]; document.getElementById('live-presenter-box').innerText = choice; if(choice === "Partner A") { document.getElementById('seat-1').classList.add('highlight'); document.getElementById('seat-2').classList.add('highlight'); } else { document.getElementById('seat-3').classList.add('highlight'); document.getElementById('seat-4').classList.add('highlight'); } }); }
+</script>
+
+</body>
+</html>
+
+</div>
