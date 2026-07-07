@@ -86,10 +86,11 @@
         }
 
         .structure-nav .btn.active {
-            background-color: transparent !important;
+            background-color: rgba(100, 255, 218, 0.15) !important;
             color: var(--teal) !important;
             border-color: var(--teal) !important;
-            box-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
+            box-shadow: 0 0 12px rgba(100, 255, 218, 0.4);
+            font-weight: 700 !important;
         }
 
         .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
@@ -328,8 +329,21 @@
         .descriptor-subtext {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: -8px;
+            margin-top: 4px;
+            margin-bottom: 4px;
             font-style: italic;
+            display: block;
+        }
+
+        .youtube-player-frame-wrapper {
+            width: 100%;
+            height: 105px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #233554;
+            background: #000;
+            display: block;
+            margin-top: 5px;
         }
 
         .spin-anim { animation: text-pulse 0.1s infinite alternate; }
@@ -337,8 +351,6 @@
     </style>
 </head>
 <body>
-
-<div id="yt-player-hidden-frame" style="display: none;"></div>
 
 <div class="dashboard-container">
     
@@ -360,7 +372,7 @@
 
         <div class="live-output-box" style="border-left: 3px solid var(--pink);">
             <span class="live-label"><i class="fa-solid fa-gift"></i> Team Praise Tracking</span>
-            <div class="live-value" id="live-praise-box" style="color: var(--pink);">---</div>
+            <div class="live-value" id="live-praise-box" style="color: var(--pink); font-family: 'Poppins', sans-serif;">---</div>
         </div>
 
         <div>
@@ -407,14 +419,14 @@
         </div>
 
         <div>
-            <div class="goal-nav" id="goal-tabs" style="border-bottom: none; padding-bottom: 5px;">
+            <div class="goal-nav" id="goal-tabs" style="border-bottom: none; padding-bottom: 8px;">
                 <button class="btn active" onclick="setObjective('ANSWER')">Answer Correctly</button>
                 <button class="btn" onclick="setObjective('SHARE')">Share Information</button>
             </div>
             <div id="objective-descriptor-lbl" class="descriptor-subtext">Solve problems, recall facts, perform skills.</div>
         </div>
 
-        <div class="structure-nav" id="structure-tabs"></div>
+        <div class="structure-nav" id="structure-tabs" style="margin-top: 5px;"></div>
 
         <div style="display: flex; flex-direction: column; gap: 15px;">
             <h3 id="struct-title">---</h3>
@@ -465,6 +477,10 @@
                 <button class="btn btn-sm" style="border-color: var(--pink); color: var(--pink); width: 100%; margin-top: 2px;" id="mute-btn" onclick="toggleMute()">
                     <i class="fa-solid fa-volume-high"></i> Music Status: Playing
                 </button>
+
+                <div class="youtube-player-frame-wrapper">
+                    <iframe id="yt-visible-player" width="100%" height="105" src="https://www.youtube.com/embed/5yx6BWlEVcY?enablejsapi=1&controls=1&autoplay=0&origin=https://github.com" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+                </div>
             </div>
         </div>
 
@@ -508,10 +524,17 @@
     };
 
     const praises = [
-        "Give your partner a High Five!", 
-        "Trigger a 'Fantastic Cheer' (Form an F with fingers, whisper *Fantastic*)", 
-        "Give partner a 'Truck Driver Cheer' (*Honk Honk, Good Job!*)",
-        "Give a 'Looking Good Cheer' (Thumb guns up, point and say *Looking Good!*)"
+        "The Firecracker: Rub hands, snap fingers, 'Boom! Great job!'",
+        "The Rollercoaster: Click up hill, raise hands, 'Whoosh! Awesome thinking!'",
+        "The Microwave: Point at team, 'Mmmmmmm... Ding! That was hot!'",
+        "The Truck Driver: Pull air horn twice, 'Honk, honk! Big time thinking!'",
+        "The Seal of Approval: Hands like flippers, clap, 'Arf, arf!'",
+        "The Soda Pop: Pop mouth, hiss like fizz, 'Refreshing answer!'",
+        "The Elvis: Curl upper lip, point, 'Thank you very much.'",
+        "The Fireworks: Clap once, throw hands up, open fingers, 'Shhhhh-pop!'",
+        "The Thunderstorm: Snap rain, slap thighs, stomp foot, 'Boom! Brilliant!'",
+        "The Windshield Wiper: Wave hands left/right, 'Super clear! Love it!'",
+        "High Five, Low Five: High five high, then swing low for second one."
     ];
 
     let activeGrouping = 'pair';
@@ -526,23 +549,10 @@
     let isTimerRunning = false;
     let isMusicMuted = false;
 
-    // YouTube Integration Variables
     let ytPlayer = null;
-    let ytApiReady = false;
 
     function onYouTubeIframeAPIReady() {
-        ytApiReady = true;
-        const initialVideoId = document.getElementById('ambient-menu').value;
-        ytPlayer = new YT.Player('yt-player-hidden-frame', {
-            height: '200',
-            width: '200',
-            videoId: initialVideoId,
-            playerVars: {
-                'autoplay': 0,
-                'controls': 0,
-                'loop': 1,
-                'playlist': initialVideoId
-            },
+        ytPlayer = new YT.Player('yt-visible-player', {
             events: {
                 'onReady': onPlayerReady
             }
@@ -550,36 +560,28 @@
     }
 
     function onPlayerReady(event) {
-        ytPlayer.setVolume(20);
+        if (!isMusicMuted) ytPlayer.setVolume(25);
     }
 
     function changeAmbientTrack() {
-        if (!ytApiReady || !ytPlayer) return;
         const targetVideoId = document.getElementById('ambient-menu').value;
-        const wasPlaying = isTimerRunning && activeTimerIndex > 0;
-        
-        ytPlayer.cueVideoById({
-            videoId: targetVideoId,
-            suggestedQuality: 'small'
-        });
-        
-        if (wasPlaying && !isMusicMuted) {
-            setTimeout(() => {
-                ytPlayer.playVideo();
-            }, 500);
+        const iframe = document.getElementById('yt-visible-player');
+        if (iframe) {
+            iframe.src = `https://www.youtube.com/embed/${targetVideoId}?enablejsapi=1&controls=1&autoplay=${(isTimerRunning && activeTimerIndex > 0 && !isMusicMuted) ? 1 : 0}`;
         }
     }
 
     function startLofiMusic() {
-        if (!ytApiReady || !ytPlayer || isMusicMuted) return;
-        if (activeTimerIndex > 0 && isTimerRunning) {
+        if (isMusicMuted) return;
+        if (activeTimerIndex > 0 && isTimerRunning && ytPlayer && typeof ytPlayer.playVideo === 'function') {
             ytPlayer.playVideo();
         }
     }
 
     function stopLofiMusic() {
-        if (!ytApiReady || !ytPlayer) return;
-        ytPlayer.pauseVideo();
+        if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
+            ytPlayer.pauseVideo();
+        }
     }
 
     function toggleMute() {
@@ -589,12 +591,14 @@
             muteBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i> Music Status: Playing`;
             muteBtn.style.borderColor = "var(--pink)";
             muteBtn.style.color = "var(--pink)";
+            if (ytPlayer && typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(25);
             if (isTimerRunning && activeTimerIndex > 0) startLofiMusic();
         } else {
             isMusicMuted = true;
             muteBtn.innerHTML = `<i class="fa-solid fa-volume-xmark"></i> Music Status: MUTED`;
             muteBtn.style.borderColor = "var(--text-muted)";
             muteBtn.style.color = "var(--text-muted)";
+            if (ytPlayer && typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(0);
             stopLofiMusic();
         }
     }
@@ -672,12 +676,7 @@
 
     function analyzeTeacherQuestion(text) {
         const displayBox = document.getElementById('classroom-giant-prompt-lbl');
-        
-        if(text && text.trim().length > 0) {
-            displayBox.innerText = text.toUpperCase();
-        } else {
-            displayBox.innerText = "WAITING FOR TEACHER INPUT...";
-        }
+        displayBox.innerText = text ? text.toUpperCase() : "WAITING FOR TEACHER INPUT...";
 
         const badge = document.getElementById('smart-suggestion-badge');
         if (!text || text.trim().length < 5) { badge.style.display = 'none'; return; }
@@ -685,18 +684,11 @@
         const lowerText = text.toLowerCase();
         let decisionGoal = "SHARE"; let predictedKey = "timedpairshare"; 
 
-        const objectiveKeywords = ['calculate', 'solve', 'simplify', 'compute', 'fraction', 'ratio', 'equation', 'true', 'false', 'define', 'identify', 'mineral', 'molecule'];
-        const brainstormingKeywords = ['list', 'brainstorm', 'rapid', 'bounce ideas', 'discuss', 'opinion'];
-
+        const objectiveKeywords = ['calculate', 'solve', 'simplify', 'equation', 'identify', 'define'];
         let objectiveScore = 0; objectiveKeywords.forEach(kw => { if (lowerText.includes(kw)) objectiveScore += 2; });
-        let shareScore = 0; brainstormingKeywords.forEach(kw => { if (lowerText.includes(kw)) shareScore += 2; });
 
-        if (objectiveScore > shareScore) {
+        if (objectiveScore > 0) {
             decisionGoal = "ANSWER"; predictedKey = (activeGrouping === 'pair') ? 'rallycoach' : 'roundrobinconsensus';
-        } else {
-            decisionGoal = "SHARE";
-            let isBrainstorm = brainstormingKeywords.some(kw => lowerText.includes(kw));
-            predictedKey = isBrainstorm ? ((activeGrouping === 'pair') ? 'rallyrobin' : 'continuousroundrobin') : ((activeGrouping === 'pair') ? 'timedpairshare' : 'timedroundrobin');
         }
 
         badge.style.display = 'inline-flex';
@@ -724,23 +716,15 @@
         activeObjective = objKey;
         const buttons = document.getElementById('goal-tabs').getElementsByTagName('button');
         const descLbl = document.getElementById('objective-descriptor-lbl');
-        
         buttons[0].className = `btn ${objKey === 'ANSWER' ? 'active' : ''}`;
         buttons[1].className = `btn ${objKey === 'SHARE' ? 'active' : ''}`;
-        
-        if (objKey === 'ANSWER') {
-            descLbl.innerText = "Solve problems, recall facts, perform skills.";
-        } else {
-            descLbl.innerText = "Share ideas, state opinions, explain thinking.";
-        }
-        
+        descLbl.innerText = objKey === 'ANSWER' ? "Solve problems, recall facts, perform skills." : "Share ideas, state opinions, explain thinking.";
         renderFilterMatrix();
     }
 
     function renderFilterMatrix() {
         const targetKeys = structureMatrix[activeGrouping][activeObjective];
         const container = document.getElementById('structure-tabs'); container.innerHTML = '';
-
         targetKeys.forEach((key) => {
             const btn = document.createElement('button'); btn.className = 'btn btn-sm';
             btn.innerText = structures[key].title; btn.onclick = () => selectStructure(key);
@@ -763,15 +747,10 @@
         document.getElementById('struct-desc').innerText = struct.desc;
         
         const goalTag = document.getElementById('struct-goal');
-        if(struct.goal === "SHARE") {
-            goalTag.innerText = "SHARE INFORMATION"; goalTag.className = "goal-tag goal-pink";
-        } else {
-            goalTag.innerText = "ANSWER CORRECTLY"; goalTag.className = "goal-tag goal-green";
-        }
+        goalTag.innerText = struct.goal === "SHARE" ? "SHARE INFORMATION" : "ANSWER CORRECTLY";
+        goalTag.className = struct.goal === "SHARE" ? "goal-tag goal-pink" : "goal-tag goal-green";
 
-        const stepsC = document.getElementById('struct-steps');
-        stepsC.innerHTML = struct.steps.map(s => `<p style="color:#e6f1ff; margin-bottom:8px;">${s}</p>`).join('');
-
+        document.getElementById('struct-steps').innerHTML = struct.steps.map(s => `<p style="color:#e6f1ff; margin-bottom:8px;">${s}</p>`).join('');
         configuredTimerCount = struct.defaultIntervals;
         document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
         buildSequentialTimerArrays(struct.defaultTime);
@@ -779,45 +758,30 @@
 
     function modifyIntervalTotalCount(delta) {
         let proposed = configuredTimerCount + delta;
-        if (proposed < 1) proposed = 1;
-        if (proposed > 8) proposed = 8; 
-        
+        if (proposed < 1) proposed = 1; if (proposed > 8) proposed = 8; 
         configuredTimerCount = proposed;
         document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
-        
-        const baseCurrentDuration = timerDurations[1] || 60;
-        buildSequentialTimerArrays(baseCurrentDuration);
+        buildSequentialTimerArrays(timerDurations[1] || 60);
     }
 
     function buildSequentialTimerArrays(baseTimePerInterval) {
         if(isTimerRunning) toggleTimer();
-        
-        timerDurations = [15]; 
-        timerLabels = ["Think Time"];
-
+        timerDurations = [15]; timerLabels = ["Think Time"];
         for(let i = 0; i < configuredTimerCount; i++) {
             timerDurations.push(baseTimePerInterval);
             timerLabels.push(`Interval #${i + 1}`);
         }
-
-        activeTimerIndex = 0;
-        renderTimerRows();
-        updateLiveVoiceHUD();
-        updateSynchronizedPresenterHUD();
+        activeTimerIndex = 0; renderTimerRows(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
     }
 
     function renderTimerRows() {
-        const container = document.getElementById('timers-container');
-        container.innerHTML = '';
-
+        const container = document.getElementById('timers-container'); container.innerHTML = '';
         timerDurations.forEach((duration, i) => {
             const row = document.createElement('div');
             row.id = `timer-row-${i}`;
             row.className = `individual-timer-row ${i === 0 ? 'think-time-row' : ''} ${i === activeTimerIndex ? 'active' : ''}`;
-            
             const mins = Math.floor(duration / 60).toString().padStart(2, '0');
             const secs = (duration % 60).toString().padStart(2, '0');
-
             row.innerHTML = `
                 <div class="timer-label">${timerLabels[i]}</div>
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -831,23 +795,12 @@
     }
 
     function adjustSpecificTime(index, amount) {
-        if(timerDurations[index] + amount < 0) { 
-            timerDurations[index] = 0; 
-        } else { 
-            timerDurations[index] += amount; 
-        }
-        
-        if (index === 1) {
-            for (let i = 2; i < timerDurations.length; i++) {
-                timerDurations[i] = timerDurations[1];
-            }
-        }
-        
+        timerDurations[index] = Math.max(0, timerDurations[index] + amount);
+        if (index === 1) { for (let i = 2; i < timerDurations.length; i++) timerDurations[i] = timerDurations[1]; }
         timerDurations.forEach((duration, idx) => {
             const mins = Math.floor(duration / 60).toString().padStart(2, '0');
             const secs = (duration % 60).toString().padStart(2, '0');
-            const elem = document.getElementById(`display-${idx}`);
-            if (elem) elem.innerText = `${mins}:${secs}`;
+            if (document.getElementById(`display-${idx}`)) document.getElementById(`display-${idx}`).innerText = `${mins}:${secs}`;
         });
     }
 
@@ -859,7 +812,8 @@
             stopLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
         } else {
             isTimerRunning = true; btn.innerHTML = `<i class="fa-solid fa-pause"></i> Pause`;
-            startLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+            if (activeTimerIndex > 0) startLofiMusic();
+            updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
             
             timerInterval = setInterval(() => {
                 if(timerDurations[activeTimerIndex] > 0) {
@@ -877,15 +831,16 @@
         document.getElementById(`timer-row-${activeTimerIndex}`).classList.remove('active');
         
         if(activeTimerIndex + 1 < timerDurations.length) {
-            activeTimerIndex++; document.getElementById(`timer-row-${activeTimerIndex}`).classList.add('active');
-            startLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
+            activeTimerIndex++; 
+            document.getElementById(`timer-row-${activeTimerIndex}`).classList.add('active');
+            if (activeTimerIndex > 0) startLofiMusic(); 
+            updateLiveVoiceHUD(); 
+            updateSynchronizedPresenterHUD();
         } else {
             clearInterval(timerInterval); isTimerRunning = false;
             document.getElementById('start-pause-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start`;
             stopLofiMusic(); updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
-            
-            const finalPraise = praises[Math.floor(Math.random() * praises.length)];
-            document.getElementById('live-praise-box').innerText = finalPraise;
+            document.getElementById('live-praise-box').innerText = praises[Math.floor(Math.random() * praises.length)];
         }
     }
 
@@ -899,9 +854,7 @@
         clearInterval(timerInterval); isTimerRunning = false;
         document.getElementById('start-pause-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start`;
         document.getElementById('live-praise-box').innerText = "---"; stopLofiMusic();
-        
-        const struct = structures[currentStructureTab];
-        buildSequentialTimerArrays(struct ? struct.defaultTime : 60);
+        buildSequentialTimerArrays(structures[currentStructureTab] ? structures[currentStructureTab].defaultTime : 60);
     }
 
     function clearResults() { 
@@ -911,13 +864,10 @@
     }
     
     function clearHighlights() { document.querySelectorAll('.seat').forEach(s => s.classList.remove('highlight')); }
-    
     function runMockAnimation(targetId, finalArray, callback) {
         const val = document.getElementById(targetId); val.classList.add('spin-anim'); clearHighlights();
-        let iterations = 0;
-        const interval = setInterval(() => { val.innerText = finalArray[Math.floor(Math.random() * finalArray.length)]; iterations++; if(iterations > 10) { clearInterval(interval); val.classList.remove('spin-anim'); callback(); } }, 60);
+        let it = 0; const iv = setInterval(() => { val.innerText = finalArray[Math.floor(Math.random() * finalArray.length)]; it++; if(it > 10) { clearInterval(iv); val.classList.remove('spin-anim'); callback(); } }, 60);
     }
-
     function triggerRndStudent() { 
         const raw = document.getElementById('roster-box').value.split('\n').map(n => n.trim()).filter(n => n); if(raw.length === 0) return alert("Roster empty!");
         runMockAnimation("live-presenter-box", raw, () => { document.getElementById('live-presenter-box').innerText = raw[Math.floor(Math.random() * raw.length)]; }); 
