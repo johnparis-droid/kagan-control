@@ -338,6 +338,8 @@
 </head>
 <body>
 
+<div id="yt-player-hidden-frame" style="display: none;"></div>
+
 <div class="dashboard-container">
     
     <div class="sidebar panel">
@@ -451,9 +453,12 @@
                 <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 5px; width: 100%;">
                     <span class="live-label" style="text-align: left;">Audio Track Mixer</span>
                     <select id="ambient-menu" class="audio-menu-dropdown" onchange="changeAmbientTrack()">
-                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Option 1: Chill-Hop LoFi Stream</option>
-                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Option 2: Coffeehouse Acoustic Jazz</option>
-                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">Option 3: Smooth Atmospheric Ambient</option>
+                        <option value="5yx6BWlEVcY">Option 1: Lofi Beats (Radio Live)</option>
+                        <option value="mdJU5ogrPMY">Option 2: Classical Music</option>
+                        <option value="zNKq0mgv-MQ">Option 3: Coffee House Music</option>
+                        <option value="gUbNlN_SqpE">Option 4: Seaside Coffee House</option>
+                        <option value="ubnDMTUui1Y">Option 5: Upbeat Instrumental</option>
+                        <option value="S8o1IrwmQug">Option 6: Soft Instrumental</option>
                     </select>
                 </div>
 
@@ -475,6 +480,8 @@
 
 </div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
     const structureMatrix = {
         pair: {
@@ -488,149 +495,16 @@
     };
 
     const structures = {
-        paircoach: { 
-            title: "Pair Coach", 
-            goal: "ANSWER", 
-            type: "pair", 
-            desc: "One partner answers or performs.", 
-            defaultTime: 60, 
-            defaultIntervals: 2, 
-            steps: [
-                "Step 1: The teacher assigns a task or problem. One partner is designated as the \"Player\" and the other as the \"Coach.\"", 
-                "Step 2: The Player answers the question or performs the task aloud.", 
-                "Step 3: The Coach watches, listens, checks for accuracy, offers guidance if needed, and provides praise when completed.", 
-                "Step 4: Roles reverse for the next specific task or segment."
-            ] 
-        },
-        rallycoach: { 
-            title: "Rally Coach", 
-            goal: "ANSWER", 
-            type: "pair", 
-            desc: "Partners take multiple turns.", 
-            defaultTime: 90, 
-            defaultIntervals: 2, 
-            steps: [
-                "Step 1: Partner A solves a problem or answers a question aloud.", 
-                "Step 2: Partner B listens carefully, checks the answer, coaches Partner A if an error is made, and praises the correct effort.", 
-                "Step 3: Partner B solves the next problem or answers the next question aloud.", 
-                "Step 4: Partner A listens, checks, coaches if necessary, and praises.",
-                "Step 5: Partners continue to alternate roles back and forth for the remaining problems."
-            ] 
-        },
-        pairshare: { 
-            title: "Pair Share", 
-            goal: "SHARE", 
-            type: "pair", 
-            desc: "Both partners share a short response.", 
-            defaultTime: 45, 
-            defaultIntervals: 2, 
-            steps: [
-                "Step 1: The teacher provides a prompt and allows a moment of individual think time.", 
-                "Step 2: Partner A shares their response or thoughts with Partner B.", 
-                "Step 3: Partner B shares their response or thoughts with Partner A."
-            ] 
-        },
-        timedpairshare: { 
-            title: "Timed Pair Share", 
-            goal: "SHARE", 
-            type: "pair", 
-            desc: "Both partners share a timed response.", 
-            defaultTime: 60, 
-            defaultIntervals: 2, 
-            steps: [
-                "Step 1: The teacher poses a question and specifies a time limit (e.g., 60 seconds per person).", 
-                "Step 2: Partner A shares for the entire designated time while Partner B listens actively without interrupting.", 
-                "Step 3: The teacher calls time, and Partner B gives a specific compliment or thank-you to Partner A.", 
-                "Step 4: Roles switch. Partner B shares for the same amount of time while A listens.",
-                "Step 5: Partner A gives a specific compliment or thank-you to Partner B."
-            ] 
-        },
-        rallyrobin: { 
-            title: "Rally Robin", 
-            goal: "SHARE", 
-            type: "pair", 
-            desc: "Partners take multiple turns.", 
-            defaultTime: 15, 
-            defaultIntervals: 2, 
-            steps: [
-                "Step 1: The teacher provides a topic or prompt that has multiple short answers, a list of items, or brief ideas.", 
-                "Step 2: Partner A shares one short response or idea.", 
-                "Step 3: Partner B shares one short response or idea.", 
-                "Step 4: Partners continue to alternate rapidly back and forth (A, B, A, B) until the teacher calls time."
-            ] 
-        },
-        teamcoach: { 
-            title: "Team Coach", 
-            goal: "ANSWER", 
-            type: "team", 
-            desc: "One teammate answers or performs.", 
-            defaultTime: 90, 
-            defaultIntervals: 4, 
-            steps: [
-                "Step 1: One teammate is designated to answer a question or perform a task for the team.", 
-                "Step 2: This individual teammate works through the task aloud.", 
-                "Step 3: The other three teammates act as \"Coaches\"—they listen, check for understanding, provide hints if the teammate gets stuck, and celebrate the correct outcome.", 
-                "Step 4: The \"Player\" role rotates to a new teammate for the next task."
-            ] 
-        },
-        roundrobinconsensus: { 
-            title: "Round Robin Consensus", 
-            goal: "ANSWER", 
-            type: "team", 
-            desc: "Each teammate answers and other teammates check.", 
-            defaultTime: 120, 
-            defaultIntervals: 4, 
-            steps: [
-                "Step 1: Teammate 1 shares an answer or idea regarding a problem.", 
-                "Step 2: The team discusses the answer to ensure everyone agrees, clarifies misconceptions, or modifies the response.", 
-                "Step 3: Once a team consensus is reached, all teammates write the agreed-upon answer on their individual papers.", 
-                "Step 4: The rotation moves to Teammate 2 to pitch the next answer, repeating the consensus cycle."
-            ] 
-        },
-        singleroundrobin: { 
-            title: "Single Round Robin", 
-            goal: "SHARE", 
-            type: "team", 
-            desc: "Each teammate shares a short response.", 
-            defaultTime: 45, 
-            defaultIntervals: 4, 
-            steps: [
-                "Step 1: The teacher poses a question or prompt.", 
-                "Step 2: Teammate 1 shares their short response.", 
-                "Step 3: Moving clockwise, Teammate 2 shares their response.", 
-                "Step 4: Teammate 3 shares their response.",
-                "Step 5: Teammate 4 shares their response, ending the single rotation around the table."
-            ] 
-        },
-        timedroundrobin: { 
-            title: "Timed Round Robin", 
-            goal: "SHARE", 
-            type: "team", 
-            desc: "Each teammate shares a timed response.", 
-            defaultTime: 60, 
-            defaultIntervals: 4, 
-            steps: [
-                "Step 1: The teacher poses a question and announces a set time limit per person (e.g., 30 seconds).", 
-                "Step 2: Teammate 1 shares for the full time limit while the rest of the team listens.", 
-                "Step 3: The timer sounds, and the team gives a quick cheer or word of appreciation.", 
-                "Step 4: The timer resets, and Teammate 2 shares. The process repeats sequentially for Teammates 3 and 4."
-            ] 
-        },
-        continuousroundrobin: { 
-            title: "Continuous Round Robin", 
-            goal: "SHARE", 
-            type: "team", 
-            desc: "Each teammate takes multiple turns.", 
-            defaultTime: 45, 
-            defaultIntervals: 4, 
-            steps: [
-                "Step 1: The teacher poses a prompt that allows for extensive brainstorming or multiple responses.", 
-                "Step 2: Teammate 1 shares one brief answer or idea.", 
-                "Step 3: Moving clockwise, Teammates 2, 3, and 4 each share one brief answer in turn.", 
-                "Step 4: Instead of stopping after Teammate 4, the rotation immediately returns to Teammate 1.",
-                "Step 5: The team continues to cycle through the numbers (1, 2, 3, 4, 1, 2, 3, 4...) adding ideas until the teacher calls time."
-            ] 
-        }
+        paircoach: { title: "Pair Coach", goal: "ANSWER", type: "pair", desc: "One partner answers or performs.", defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: The teacher assigns a task or problem. One partner is designated as the \"Player\" and the other as the \"Coach.\"", "Step 2: The Player answers the question or performs the task aloud.", "Step 3: The Coach watches, listens, checks for accuracy, offers guidance if needed, and provides praise when completed.", "Step 4: Roles reverse for the next specific task or segment."] },
+        rallycoach: { title: "Rally Coach", goal: "ANSWER", type: "pair", desc: "Partners take multiple turns.", defaultTime: 90, defaultIntervals: 2, steps: ["Step 1: Partner A solves a problem or answers a question aloud.", "Step 2: Partner B listens carefully, checks the answer, coaches Partner A if an error is made, and praises the correct effort.", "Step 3: Partner B solves the next problem or answers the next question aloud.", "Step 4: Partner A listens, checks, coaches if necessary, and praises.", "Step 5: Partners continue to alternate roles back and forth for the remaining problems."] },
+        pairshare: { title: "Pair Share", goal: "SHARE", type: "pair", desc: "Both partners share a short response.", defaultTime: 45, defaultIntervals: 2, steps: ["Step 1: The teacher provides a prompt and allows a moment of individual think time.", "Step 2: Partner A shares their response or thoughts with Partner B.", "Step 3: Partner B shares their response or thoughts with Partner A."] },
+        timedpairshare: { title: "Timed Pair Share", goal: "SHARE", type: "pair", desc: "Both partners share a timed response.", defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: The teacher poses a question and specifies a time limit (e.g., 60 seconds per person).", "Step 2: Partner A shares for the entire designated time while Partner B listens actively without interrupting.", "Step 3: The teacher calls time, and Partner B gives a specific compliment or thank-you to Partner A.", "Step 4: Roles switch. Partner B shares for the same amount of time while A listens.", "Step 5: Partner A gives a specific compliment or thank-you to Partner B."] },
+        rallyrobin: { title: "Rally Robin", goal: "SHARE", type: "pair", desc: "Partners take multiple turns.", defaultTime: 15, defaultIntervals: 2, steps: ["Step 1: The teacher provides a topic or prompt that has multiple short answers, a list of items, or brief ideas.", "Step 2: Partner A shares one short response or idea.", "Step 3: Partner B shares one short response or idea.", "Step 4: Partners continue to alternate rapidly back and forth (A, B, A, B) until the teacher calls time."] },
+        teamcoach: { title: "Team Coach", goal: "ANSWER", type: "team", desc: "One teammate answers or performs.", defaultTime: 90, defaultIntervals: 4, steps: ["Step 1: One teammate is designated to answer a question or perform a task for the team.", "Step 2: This individual teammate works through the task aloud.", "Step 3: The other three teammates act as \"Coaches\"—they listen, check for understanding, provide hints if the teammate gets stuck, and celebrate the correct outcome.", "Step 4: The \"Player\" role rotates to a new teammate for the next task."] },
+        roundrobinconsensus: { title: "Round Robin Consensus", goal: "ANSWER", type: "team", desc: "Each teammate answers and other teammates check.", defaultTime: 120, defaultIntervals: 4, steps: ["Step 1: Teammate 1 shares an answer or idea regarding a problem.", "Step 2: The team discusses the answer to ensure everyone agrees, clarifies misconceptions, or modifies the response.", "Step 3: Once a team consensus is reached, all teammates write the agreed-upon answer on their individual papers.", "Step 4: The rotation moves to Teammate 2 to pitch the next answer, repeating the consensus cycle."] },
+        singleroundrobin: { title: "Single Round Robin", goal: "SHARE", type: "team", desc: "Each teammate shares a short response.", defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: The teacher poses a question or prompt.", "Step 2: Teammate 1 shares their short response.", "Step 3: Moving clockwise, Teammate 2 shares their response.", "Step 4: Teammate 3 shares their response.", "Step 5: Teammate 4 shares their response, ending the single rotation around the table."] },
+        timedroundrobin: { title: "Timed Round Robin", goal: "SHARE", type: "team", desc: "Each teammate shares a timed response.", defaultTime: 60, defaultIntervals: 4, steps: ["Step 1: The teacher poses a question and announces a set time limit per person (e.g., 30 seconds).", "Step 2: Teammate 1 shares for the full time limit while the rest of the team listens.", "Step 3: The timer sounds, and the team gives a quick cheer or word of appreciation.", "Step 4: The timer resets, and Teammate 2 shares. The process repeats sequentially for Teammates 3 and 4."] },
+        continuousroundrobin: { title: "Continuous Round Robin", goal: "SHARE", type: "team", desc: "Each teammate takes multiple turns.", defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: The teacher poses a prompt that allows for extensive brainstorming or multiple responses.", "Step 2: Teammate 1 shares one brief answer or idea.", "Step 3: Moving clockwise, Teammates 2, 3, and 4 each share one brief answer in turn.", "Step 4: Instead of stopping after Teammate 4, the rotation immediately returns to Teammate 1.", "Step 5: The team continues to cycle through the numbers (1, 2, 3, 4, 1, 2, 3, 4...) adding ideas until the teacher calls time."] }
     };
 
     const praises = [
@@ -652,37 +526,61 @@
     let isTimerRunning = false;
     let isMusicMuted = false;
 
-    let classroomMusic = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3");
-    classroomMusic.loop = true;
+    // YouTube Integration Variables
+    let ytPlayer = null;
+    let ytApiReady = false;
 
-    let audioCtx = null;
-    function initAudioContext() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
+    function onYouTubeIframeAPIReady() {
+        ytApiReady = true;
+        const initialVideoId = document.getElementById('ambient-menu').value;
+        ytPlayer = new YT.Player('yt-player-hidden-frame', {
+            height: '200',
+            width: '200',
+            videoId: initialVideoId,
+            playerVars: {
+                'autoplay': 0,
+                'controls': 0,
+                'loop': 1,
+                'playlist': initialVideoId
+            },
+            events: {
+                'onReady': onPlayerReady
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        ytPlayer.setVolume(20);
     }
 
     function changeAmbientTrack() {
-        const selectedSrc = document.getElementById('ambient-menu').value;
+        if (!ytApiReady || !ytPlayer) return;
+        const targetVideoId = document.getElementById('ambient-menu').value;
         const wasPlaying = isTimerRunning && activeTimerIndex > 0;
         
-        classroomMusic.pause();
-        classroomMusic = new Audio(selectedSrc);
-        classroomMusic.loop = true;
+        ytPlayer.cueVideoById({
+            videoId: targetVideoId,
+            suggestedQuality: 'small'
+        });
         
         if (wasPlaying && !isMusicMuted) {
-            classroomMusic.volume = 0.15;
-            classroomMusic.play().catch(e => console.log("Audio track loop held."));
+            setTimeout(() => {
+                ytPlayer.playVideo();
+            }, 500);
         }
     }
 
     function startLofiMusic() {
-        if (activeTimerIndex > 0 && isTimerRunning && !isMusicMuted) {
-            classroomMusic.volume = 0.15; 
-            classroomMusic.play().catch(e => console.log("Audio pipeline safely held context."));
+        if (!ytApiReady || !ytPlayer || isMusicMuted) return;
+        if (activeTimerIndex > 0 && isTimerRunning) {
+            ytPlayer.playVideo();
         }
     }
 
-    function stopLofiMusic() { classroomMusic.pause(); }
+    function stopLofiMusic() {
+        if (!ytApiReady || !ytPlayer) return;
+        ytPlayer.pauseVideo();
+    }
 
     function toggleMute() {
         const muteBtn = document.getElementById('mute-btn');
@@ -733,6 +631,12 @@
             presenterBox.innerText = `Seat Number ${targetSeatNum}`;
             document.getElementById(`seat-${targetSeatNum}`).classList.add('highlight');
         }
+    }
+
+    let audioCtx = null;
+    function initAudioContext() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function triggerQuietSignal() { 
