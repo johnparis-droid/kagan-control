@@ -335,15 +335,14 @@
             display: block;
         }
 
-        .youtube-player-frame-wrapper {
-            width: 100%;
-            height: 105px;
-            border-radius: 6px;
+        /* Invisible audio player sandbox configuration */
+        .hidden-player-sandbox {
+            position: absolute;
+            top: -999px;
+            left: -999px;
+            width: 1px;
+            height: 1px;
             overflow: hidden;
-            border: 1px solid #233554;
-            background: #000;
-            display: block;
-            margin-top: 5px;
         }
 
         .spin-anim { animation: text-pulse 0.1s infinite alternate; }
@@ -478,8 +477,8 @@
                     <i class="fa-solid fa-volume-high"></i> Music Status: Playing
                 </button>
 
-                <div class="youtube-player-frame-wrapper">
-                    <iframe id="yt-visible-player" width="100%" height="105" src="https://www.youtube.com/embed/5yx6BWlEVcY?enablejsapi=1&controls=1&autoplay=0&origin=https://github.com" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+                <div class="hidden-player-sandbox">
+                    <div id="yt-visible-player"></div>
                 </div>
             </div>
         </div>
@@ -552,7 +551,19 @@
     let ytPlayer = null;
 
     function onYouTubeIframeAPIReady() {
+        const targetVideoId = document.getElementById('ambient-menu').value;
         ytPlayer = new YT.Player('yt-visible-player', {
+            height: '1',
+            width: '1',
+            videoId: targetVideoId,
+            playerVars: {
+                'controls': 0,
+                'disablekb': 1,
+                'rel': 0,
+                'modestbranding': 1,
+                'enablejsapi': 1,
+                'origin': window.location.origin
+            },
             events: {
                 'onReady': onPlayerReady
             }
@@ -565,9 +576,12 @@
 
     function changeAmbientTrack() {
         const targetVideoId = document.getElementById('ambient-menu').value;
-        const iframe = document.getElementById('yt-visible-player');
-        if (iframe) {
-            iframe.src = `https://www.youtube.com/embed/${targetVideoId}?enablejsapi=1&controls=1&autoplay=${(isTimerRunning && activeTimerIndex > 0 && !isMusicMuted) ? 1 : 0}`;
+        if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
+            ytPlayer.loadVideoById(targetVideoId);
+            // If the timer isn't ready for music yet, pause it immediately
+            if (!isTimerRunning || activeTimerIndex === 0) {
+                setTimeout(() => { ytPlayer.pauseVideo(); }, 150);
+            }
         }
     }
 
