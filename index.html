@@ -1,4 +1,4 @@
-<div style="min-width: 1250px; width: 100%; overflow-x: auto; background-color: #020c1b; padding: 10px; border-radius: 12px;">
+<div style="min-width: 1250px; width: 100%; max-height: 850px; overflow: hidden; background-color: #020c1b; padding: 4px; border-radius: 12px;">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +21,8 @@
             --accent: #00d2ff;
             --pink: #ff69b4;
             --green: #4ade80;
+            --purple: #b19ffb;
+            --orange: #ff9f43;
         }
 
         * { box-sizing: border-box; }
@@ -29,53 +31,82 @@
             color: var(--text-light);
             font-family: 'Lato', sans-serif;
             margin: 0;
-            padding: 10px;
-            min-height: 100vh;
+            padding: 4px; 
+            max-height: 840px;
+            overflow: hidden;
+            font-size: 1.05rem;
         }
 
         .dashboard-container {
             width: 100%;
             display: grid;
-            grid-template-columns: 360px 1fr 360px;
-            gap: 20px;
+            grid-template-columns: 340px 1fr 340px; 
+            gap: 10px; 
+            align-items: stretch;
+            height: 830px;
         }
 
-        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; }
-        p { margin: 0 0 10px 0; color: var(--text-muted); line-height: 1.5; }
+        h1 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; font-size: 1.8rem; }
+        h2 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; font-size: 1.5rem; }
+        h3 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; font-size: 1.25rem; }
+        h4 { font-family: 'Poppins', sans-serif; color: var(--teal); margin: 0; font-size: 1.1rem; }
+        p { margin: 0 0 6px 0; color: var(--text-muted); line-height: 1.4; font-size: 0.95rem; }
 
         .panel {
             background-color: var(--bg-card);
             border: 1px solid #233554;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 12px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            height: 100%;
+        }
+        
+        .sidebar.panel {
+            justify-content: flex-start;
+        }
+
+        .right-sidebar-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .right-sidebar-wrapper .panel {
+            flex: 1;
         }
 
         .btn {
             background-color: transparent;
             color: var(--teal);
-            border: 2px solid var(--teal);
-            border-radius: 6px;
-            padding: 10px 15px;
+            border: 1.5px solid var(--teal);
+            border-radius: 5px;
+            padding: 6px 12px;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.95rem;
         }
-        .btn:hover { background-color: rgba(100, 255, 218, 0.1); transform: translateY(-1px); }
+        .btn:hover { background-color: rgba(100, 255, 218, 0.08); transform: translateY(-1px); }
         
         .tab-nav .btn.active { 
             background-color: var(--teal) !important; 
             color: #000000 !important; 
             font-weight: 700 !important; 
             border-color: var(--teal) !important;
+        }
+        .tab-nav .btn.btn-orange-mode.active {
+            background-color: var(--orange) !important;
+            color: #000000 !important;
+            border-color: var(--orange) !important;
         }
 
         .goal-nav .btn.active {
@@ -84,28 +115,46 @@
             font-weight: 700 !important;
             border-color: var(--accent) !important;
         }
-
-        .structure-nav .btn.active {
-            background-color: rgba(100, 255, 218, 0.15) !important;
-            color: var(--teal) !important;
-            border-color: var(--teal) !important;
-            box-shadow: 0 0 12px rgba(100, 255, 218, 0.4);
-            font-weight: 700 !important;
+        .goal-nav .btn.btn-orange-sub.active {
+            background-color: var(--orange) !important;
+            color: #000000 !important;
+            border-color: var(--orange) !important;
         }
 
-        .btn-sm { padding: 6px 12px; font-size: 0.85rem; }
+        .structure-nav .btn.active {
+            background-color: rgba(100, 255, 218, 0.12) !important;
+            color: var(--teal) !important;
+            border-color: var(--teal) !important;
+            box-shadow: 0 0 6px rgba(100, 255, 218, 0.25);
+            font-weight: 700 !important;
+        }
+        .structure-nav .btn.orange-struct-btn {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+        .structure-nav .btn.orange-struct-btn:hover {
+            background-color: rgba(255, 159, 67, 0.08);
+        }
+        .structure-nav .btn.orange-struct-btn.active {
+            background-color: rgba(255, 159, 67, 0.15) !important;
+            color: var(--orange) !important;
+            border-color: var(--orange) !important;
+            box-shadow: 0 0 6px rgba(255, 159, 67, 0.25) !important;
+        }
+
+        .btn-sm { padding: 6px 10px; font-size: 0.85rem; }
         
         .giant-prompt-display {
             background-color: #112240;
             border: 2px dashed #233554;
-            border-radius: 10px;
-            padding: 22px;
+            border-radius: 8px;
+            padding: 14px;
             text-align: center;
             box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
         .giant-prompt-text {
             font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 700;
             color: #ffffff;
             letter-spacing: -0.5px;
@@ -116,203 +165,297 @@
         .live-output-box {
             background-color: var(--bg-inner);
             border: 1px solid #233554;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             text-align: center;
         }
-        .live-label { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 4px; display: block; font-weight: bold;}
-        .live-value { font-size: 1.1rem; font-weight: bold; color: #fff; min-height: 24px; line-height: 1.3;}
+        .live-label { font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 4px; display: block; font-weight: bold;}
+        .live-value { font-size: 1.1rem; font-weight: bold; color: #fff; min-height: 22px; line-height: 1.3;}
 
         .mat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
             background-color: var(--bg-inner);
-            padding: 12px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 6px;
             border: 1px dashed #233554;
             text-align: center;
         }
         .seat {
             background-color: var(--bg-card);
-            padding: 10px 4px;
-            border-radius: 6px;
+            padding: 6px 4px;
+            border-radius: 4px;
             border: 1px solid #233554;
         }
         .seat.highlight {
             border-color: var(--teal);
-            box-shadow: 0 0 10px rgba(100,255,218,0.3);
-            background-color: rgba(100, 255, 218, 0.05);
+            box-shadow: 0 0 8px rgba(100,255,218,0.3);
+            background-color: rgba(100, 255, 218, 0.04);
         }
-        .seat-num { font-size: 1.3rem; font-weight: bold; color: #fff; }
-        .seat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .seat-num { font-size: 1.25rem; font-weight: bold; color: #fff; }
+        .seat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
 
+        .roster-wrapper {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2px;
+            gap: 6px;
+        }
         .roster-area {
             width: 100%;
-            height: 80px;
+            height: 65px;
             background-color: var(--bg-inner);
             color: #fff;
             border: 1px solid #233554;
-            border-radius: 6px;
-            padding: 8px;
+            border-radius: 5px;
+            padding: 6px 8px;
             resize: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-family: inherit;
         }
 
-        .main-content { display: grid; grid-template-rows: auto auto auto auto auto 1fr; gap: 20px; }
+        .main-content { display: grid; grid-template-rows: auto auto 1fr; gap: 10px; }
 
         .top-navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #233554;
-            padding-bottom: 15px;
+            border-bottom: 1.5px solid #233554;
+            padding-bottom: 8px;
+        }
+
+        .selector-roadmap-split-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 12px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .split-left-selectors {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .split-right-roadmap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
         }
 
         .tab-nav, .goal-nav, .structure-nav {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            border-bottom: 1px solid #233554;
-            padding-bottom: 12px;
+            gap: 8px;
+            padding-bottom: 1px;
         }
 
         .step-card {
             background-color: var(--bg-inner);
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 6px;
+            padding: 12px 16px;
             border-left: 4px solid var(--teal);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .roadmap-text-autofit-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: flex-start;
+            overflow-y: auto;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .roadmap-instruction-step {
+            color: #ffffff !important;
+            margin-bottom: 10px !important;
+            line-height: 1.4 !important;
+            font-weight: 600 !important;
+            font-size: 1.4rem !important; 
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .roadmap-instruction-step:last-child {
+            margin-bottom: 0 !important;
         }
 
         .goal-tag {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 4px;
+            padding: 3px 8px;
+            border-radius: 3px;
             display: inline-block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
         }
-        .goal-pink { background-color: rgba(255, 105, 180, 0.15); color: var(--pink); border: 1px solid var(--pink); }
-        .goal-green { background-color: rgba(74, 222, 128, 0.15); color: var(--green); border: 1px solid var(--green); }
+        .goal-pink { background-color: rgba(255, 105, 180, 0.12); color: var(--pink); border: 1px solid var(--pink); }
+        .goal-green { background-color: rgba(74, 222, 128, 0.12); color: var(--green); border: 1px solid var(--green); }
+        .goal-orange { background-color: rgba(255, 159, 67, 0.12); color: var(--orange); border: 1px solid var(--orange); }
 
         #smart-suggestion-badge {
-            font-size: 0.75rem;
-            background: rgba(0, 210, 255, 0.15);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 3px 8px;
+            font-size: 0.8rem;
+            padding: 6px;
             border-radius: 4px;
             font-weight: bold;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        #smart-suggestion-badge.empty-state {
+            background: rgba(35, 53, 84, 0.2);
+            color: var(--text-muted);
+            border: 1px dashed #233554;
+        }
+        #smart-suggestion-badge.active-state {
+            background: rgba(0, 210, 255, 0.12);
+            color: var(--accent);
+            border: 1px solid var(--accent);
         }
 
         .timer-module {
             background-color: var(--bg-inner);
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 6px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             border: 1px solid #233554;
-            gap: 12px;
+            gap: 8px;
         }
+        
         .timers-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 6px;
             width: 100%;
         }
+        
         .individual-timer-row {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             background: rgba(0,0,0,0.2);
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px;
+            border-radius: 4px;
             border: 1px solid #233554;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            text-align: center;
+            gap: 2px;
         }
+        
+        .individual-timer-row.inactive-segment {
+            opacity: 0.25;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px dashed #1b2a47;
+        }
+        .individual-timer-row.inactive-segment .timer-adjust-btn {
+            pointer-events: none;
+            opacity: 0.1;
+        }
+        
+        .individual-timer-row.think-time-row {
+            grid-column: span 2;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 6px 12px;
+        }
+        
         .individual-timer-row.active {
             border-color: var(--accent);
-            background: rgba(0, 210, 255, 0.05);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.1);
+            background: rgba(0, 210, 255, 0.04);
+            box-shadow: 0 0 6px rgba(0, 210, 255, 0.1);
         }
         .individual-timer-row.think-time-row.active {
             border-color: var(--pink);
-            background: rgba(255, 105, 180, 0.05);
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.1);
+            background: rgba(255, 105, 180, 0.04);
+            box-shadow: 0 0 6px rgba(255, 105, 180, 0.1);
         }
         .timer-label {
             font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-muted);
         }
         .individual-timer-row.active .timer-label { color: #fff; }
+        
         .timer-display {
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-family: 'Poppins', sans-serif;
             font-weight: bold;
             color: var(--text-muted);
+        }
+        .individual-timer-row.think-time-row .timer-display {
+            font-size: 1.5rem;
         }
         .individual-timer-row.active .timer-display { color: var(--accent); }
         .individual-timer-row.think-time-row.active .timer-display { color: var(--pink); }
         
         .timer-adjust-btn {
-            background-color: rgba(100, 255, 218, 0.05);
+            background-color: rgba(100, 255, 218, 0.03);
             border: 1px solid #233554;
             color: var(--teal);
-            font-size: 0.9rem;
-            width: 28px;
-            height: 28px;
+            font-size: 0.75rem;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .timer-adjust-btn:hover { background-color: rgba(100, 255, 218, 0.15); border-color: var(--teal); }
-        .timer-controls { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .control-row { display: flex; gap: 10px; width: 100%; }
+        .timer-adjust-btn:hover { background-color: rgba(100, 255, 218, 0.1); border-color: var(--teal); }
+        .timer-controls { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+        .control-row { display: flex; gap: 8px; width: 100%; }
 
         .question-module {
             background-color: var(--bg-inner);
             border: 1px solid #233554;
-            border-radius: 8px;
-            padding: 15px;
+            border-radius: 6px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             width: 100%;
         }
 
         .question-input-area {
             width: 100%;
-            height: 90px;
+            height: 75px; 
             background-color: rgba(0, 0, 0, 0.3);
             color: #fff;
             border: 1px solid #233554;
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 5px;
+            padding: 8px;
             font-size: 0.9rem;
             resize: none;
             font-family: inherit;
+            line-height: 1.4;
         }
 
         .audio-menu-dropdown {
             background-color: var(--bg-inner);
             color: var(--teal);
             border: 1px solid var(--teal);
-            border-radius: 6px;
-            padding: 8px;
+            border-radius: 5px;
+            padding: 4px;
             font-size: 0.85rem;
             width: 100%;
             font-family: 'Poppins', sans-serif;
+            height: 32px;
         }
 
         .interval-stepper-container {
@@ -321,21 +464,29 @@
             justify-content: space-between;
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid #233554;
-            border-radius: 6px;
-            padding: 6px 12px;
+            border-radius: 5px;
+            padding: 6px 10px;
             width: 100%;
         }
 
         .descriptor-subtext {
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-top: 4px;
-            margin-bottom: 4px;
+            margin-top: 2px;
+            margin-bottom: 1px;
             font-style: italic;
             display: block;
         }
 
-        /* Invisible audio player sandbox configuration */
+        .group-type-subdescriptor {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-top: -6px;
+            margin-bottom: 2px;
+            font-weight: 600;
+            display: block;
+        }
+
         .hidden-player-sandbox {
             position: absolute;
             top: -999px;
@@ -345,6 +496,47 @@
             overflow: hidden;
         }
 
+        .coaching-panel-trigger-row {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .coaching-btn {
+            border-color: var(--green);
+            color: var(--green);
+            font-size: 0.85rem;
+            padding: 4px 8px;
+        }
+        .coaching-btn.active {
+            background-color: var(--green) !important;
+            color: #000000 !important;
+        }
+        
+        /* ADJUSTED COACHING SUB-DISPLAY FONT SCALING */
+        .coaching-instructions-box {
+            display: none;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 6px;
+        }
+        .coaching-line {
+            font-size: 1.15rem; /* Upgraded font scaling for room visibility */
+            line-height: 1.4;
+            margin-bottom: 6px;
+            color: var(--text-light);
+        }
+        .coaching-line:last-child { margin-bottom: 0; }
+        .coaching-bold-tag {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-family: 'Poppins', sans-serif;
+        }
+        .coaching-facts .coaching-bold-tag { color: var(--orange); }
+        .coaching-skills .coaching-bold-tag { color: var(--accent); }
+
         .spin-anim { animation: text-pulse 0.1s infinite alternate; }
         @keyframes text-pulse { from { opacity: 0.5; transform: scale(0.98); } to { opacity: 1; transform: scale(1.02); } }
     </style>
@@ -353,29 +545,30 @@
 
 <div class="dashboard-container">
     
+    <!-- ==================== LEFT SIDEBAR ==================== -->
     <div class="sidebar panel">
         <div>
             <h3><i class="fa-solid fa-sliders"></i> Smart Selectors</h3>
-            <p style="font-size: 0.8rem; margin: 0;">Participation and team assignments context engine.</p>
+            <p style="font-size: 0.8rem; margin: 0;">Participation and context engine.</p>
         </div>
 
-        <div class="live-output-box" style="border-left: 3px solid var(--accent); background-color: rgba(0,210,255,0.03);">
+        <div class="live-output-box" style="border-left: 3px solid var(--accent); background-color: rgba(0,210,255,0.02); margin-top: 1px;">
             <span class="live-label"><i class="fa-solid fa-user-tag"></i> Active Presenter Assignment</span>
-            <div class="live-value" id="live-presenter-box" style="color: var(--accent); font-size: 1.2rem;">---</div>
+            <div class="live-value" id="live-presenter-box" style="color: var(--accent); font-size: 1.15rem;">---</div>
         </div>
 
         <div class="live-output-box" style="border-left: 3px solid var(--teal);">
             <span class="live-label"><i class="fa-solid fa-volume-high"></i> Active Voice Level Target</span>
-            <div class="live-value" id="live-voice-box" style="color: var(--teal);">Level 0: Perfect Silence</div>
+            <div class="live-value" id="live-voice-box" style="color: var(--teal); font-size: 1rem;">Level 0: Perfect Silence</div>
         </div>
 
         <div class="live-output-box" style="border-left: 3px solid var(--pink);">
             <span class="live-label"><i class="fa-solid fa-gift"></i> Team Praise Tracking</span>
-            <div class="live-value" id="live-praise-box" style="color: var(--pink); font-family: 'Poppins', sans-serif;">---</div>
+            <div class="live-value" id="live-praise-box" style="color: var(--pink); font-family: 'Poppins', sans-serif; font-size: 1rem;">---</div>
         </div>
 
         <div>
-            <h4 style="margin-bottom: 8px; font-size: 0.9rem;">Interactive Team Mat</h4>
+            <h4 style="margin-bottom: 6px; font-size: 0.95rem;">Interactive Team Mat</h4>
             <div class="mat-grid" id="mat-grid">
                 <div class="seat" id="seat-1"><div class="seat-num">1</div><div class="seat-label">Partner A</div></div>
                 <div class="seat" id="seat-2"><div class="seat-num">2</div><div class="seat-label">Partner A</div></div>
@@ -390,65 +583,118 @@
         </div>
         <button class="btn btn-sm" onclick="triggerRndStudent()"><i class="fa-solid fa-shuffle"></i> Pull Random Student</button>
 
-        <div>
-            <h4 style="margin-bottom: 6px; font-size: 0.9rem;"><i class="fa-solid fa-users-line"></i> Class Roster Hub</h4>
-            <textarea id="roster-box" class="roster-area" placeholder="Paste names here...">Davis, M.&#10;Gomez, E.&#10;Jackson, T.&#10;Miller, B.&#10;Nguyen, K.&#10;O'Bryan, L.&#10;Smith, J.&#10;Wilson, A.</textarea>
+        <div class="roster-wrapper">
+            <h4 style="margin-bottom: 0px; font-size: 0.95rem;"><i class="fa-solid fa-users-line"></i> Class Roster Hub</h4>
+            <textarea id="roster-box" class="roster-area" placeholder="Paste names here.."></textarea>
+        </div>
+
+        <!-- TEAMBUILDING MODULE -->
+        <div class="question-module" style="gap: 6px; border-color: var(--purple); background: rgba(177, 159, 251, 0.02); padding: 8px; margin-top: auto; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="font-size: 0.95rem; color: var(--purple);"><i class="fa-solid fa-users"></i> Teambuilding Questions</h4>
+                <button class="btn btn-sm" style="padding: 3px 8px; font-size: 0.8rem; border-color: var(--purple); color: var(--purple);" onclick="generateCommunityQuestion()">
+                    <i class="fa-solid fa-shuffle"></i> Draw Question
+                </button>
+            </div>
+            <div id="community-question-display" style="background: rgba(0,0,0,0.2); border: 1px solid #233554; padding: 6px; border-radius: 4px; font-size: 0.85rem; min-height: 80px; display: flex; align-items: center; justify-content: center; text-align: center; font-style: italic; color: var(--text-light); line-height: 1.35; flex-grow: 1; overflow-y: auto;">
+                Tap Draw Question to preload a discussion topic...
+            </div>
+            <button id="push-community-btn" class="btn btn-sm" style="width: 100%; border-color: var(--purple); color: var(--purple); display: none; padding: 4px; font-size: 0.85rem;" onclick="pushCommunityQuestionToHub()">
+                <i class="fa-solid fa-paper-plane"></i> Push to Hub & Auto-Select
+            </button>
         </div>
     </div>
 
+    <!-- ==================== CENTER MAIN CONTENT HUB ==================== -->
     <div class="main-content panel">
         <div class="top-navbar">
             <div>
-                <h2>Kagan Control Center</h2>
-                <p style="margin: 0; font-size: 0.9rem;">Middle School Division • Engagement Strategy Architecture</p>
+                <h2 style="font-size: 1.5rem;">Kagan Control Center</h2>
+                <p style="margin: 0; font-size: 0.9rem; color: var(--teal); font-weight: bold;">It’s All About Engagement</p>
             </div>
-            <button class="btn" style="border-color: #ff6b6b; color: #ff6b6b;" onclick="triggerQuietSignal()">
+            <button class="btn btn-sm" style="border-color: #ff6b6b; color: #ff6b6b; padding: 4px 8px; font-size: 0.9rem;" onclick="triggerQuietSignal()">
                 <i class="fa-solid fa-hand-paper"></i> Signal Focus (Quiet Cues)
             </button>
         </div>
 
         <div class="giant-prompt-display">
-            <span class="live-label" style="margin-bottom: 8px; color: var(--teal); font-weight: bold;"><i class="fa-solid fa-bullhorn"></i> Current Focus Prompt</span>
-            <div class="giant-prompt-text" id="classroom-giant-prompt-lbl">WAITING FOR TEACHER INPUT...</div>
+            <span class="live-label" style="margin-bottom: 2px; color: var(--teal); font-weight: bold; font-size: 0.85rem;"><i class="fa-solid fa-bullhorn"></i> Current Focus prompt</span>
+            <div class="giant-prompt-text" id="classroom-giant-prompt-lbl">Waiting for teacher input...</div>
         </div>
 
-        <div class="tab-nav" id="group-tabs">
-            <button class="btn active" onclick="setGrouping('pair')">Pair Structures</button>
-            <button class="btn" onclick="setGrouping('team')">Team Structures</button>
-        </div>
-
-        <div>
-            <div class="goal-nav" id="goal-tabs" style="border-bottom: none; padding-bottom: 8px;">
-                <button class="btn active" onclick="setObjective('ANSWER')">Answer Correctly</button>
-                <button class="btn" onclick="setObjective('SHARE')">Share Information</button>
-            </div>
-            <div id="objective-descriptor-lbl" class="descriptor-subtext">Solve problems, recall facts, perform skills.</div>
-        </div>
-
-        <div class="structure-nav" id="structure-tabs" style="margin-top: 5px;"></div>
-
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <h3 id="struct-title">---</h3>
-            <p id="struct-desc">---</p>
+        <div class="selector-roadmap-split-container">
             
-            <div class="step-card">
-                <span id="struct-goal" class="goal-tag">---</span>
-                <h4 style="color:#fff; margin-bottom: 8px;">Structure Roadmap</h4>
-                <div id="struct-steps"></div>
+            <!-- LEFT HALF: Selector Columns -->
+            <div class="split-left-selectors">
+                <div class="tab-nav" id="group-tabs">
+                    <button class="btn active" onclick="setGrouping('pair')">Pair Structures</button>
+                    <button class="btn" onclick="setGrouping('team')">Team Structures</button>
+                    <button class="btn btn-orange-mode" style="border-color: var(--orange); color: var(--orange);" onclick="setGrouping('class')">Class Structures</button>
+                </div>
+                
+                <div id="group-audience-descriptor" class="group-type-subdescriptor">Structures for Partner A and Partner B</div>
+
+                <div id="objective-filter-panel" style="display: flex; flex-direction: column; gap: 6px;">
+                    <div class="goal-nav" id="goal-tabs">
+                        <button class="btn active" onclick="setObjective('ANSWER')">Answer Correctly</button>
+                        <button class="btn" onclick="setObjective('SHARE')">Share Information</button>
+                        <button class="btn btn-orange-sub" style="border-color: var(--orange); color: var(--orange);" onclick="setObjective('OTHER')">Other</button>
+                    </div>
+                    <div id="objective-descriptor-lbl" class="descriptor-subtext">Share ideas, state opinions, explain thinking.</div>
+                </div>
+
+                <div class="structure-nav" id="structure-tabs"></div>
             </div>
+
+            <!-- RIGHT HALF: Instruction Panel Box Layout -->
+            <div class="split-right-roadmap">
+                <h3 id="struct-title" style="font-size: 1.2rem; margin-bottom: 1px;">---</h3>
+                
+                <div class="step-card" id="struct-step-card-wrapper" style="border-left: 4px solid var(--teal); width: 100%;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap;">
+                        <span id="struct-goal" class="goal-tag">---</span>
+                    </div>
+
+                    <!-- Coaching Module Buttons Activation Strip -->
+                    <div class="coaching-panel-trigger-row" id="coaching-trigger-strip">
+                        <button id="coaching-btn-facts" class="btn btn-sm coaching-btn" onclick="toggleCoachingSubsystem('facts')"><i class="fa-solid fa-book"></i> Coaching: Knowledge</button>
+                        <button id="coaching-btn-skills" class="btn btn-sm coaching-btn" onclick="toggleCoachingSubsystem('skills')"><i class="fa-solid fa-gears"></i> Coaching: Skills</button>
+                    </div>
+
+                    <h4 style="color:#fff; margin-bottom: 4px; font-size: 0.95rem;"><i class="fa-solid fa-map-signs"></i> Structure Roadmap Instructions</h4>
+                    
+                    <!-- Expanded Instructions Text Area box container -->
+                    <div class="roadmap-text-autofit-container" id="struct-steps-container-box">
+                        <div id="struct-steps"></div>
+                    </div>
+
+                    <!-- Enhanced Scale Coaching Modules -->
+                    <div class="coaching-instructions-box coaching-facts" id="coaching-box-facts">
+                        <div class="coaching-line"><span class="coaching-bold-tag">Reveal:</span> Show the question. If they miss it, briefly show them the right answer or definition.</div>
+                        <div class="coaching-line"><span class="coaching-bold-tag">Re-ask:</span> Hide the answer right away, mix it back in, and ask the exact same question again.</div>
+                        <div class="coaching-line"><span class="coaching-bold-tag">Remember:</span> Once they get it right, use a fun trick, connection, or praise to help them remember it.</div>
+                    </div>
+                    <div class="coaching-instructions-box coaching-skills" id="coaching-box-skills">
+                        <div class="coaching-line"><span class="coaching-bold-tag">Tip:</span> Stuck or made a mistake? Give a small hint (Tip #1). Still stuck? Give a different hint (Tip #2).</div>
+                        <div class="coaching-line"><span class="coaching-bold-tag">Try Again:</span> Let your partner try to solve the step again using those two helpful tips.</div>
+                        <div class="coaching-line"><span class="coaching-bold-tag">Teach:</span> Still stuck? Explain and model how to do it. Then have them try a new one to prove they've got it!</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div style="display: flex; flex-direction: column; gap: 15px;">
+    <!-- ==================== RIGHT SIDEBAR ==================== -->
+    <div class="right-sidebar-wrapper">
         <div class="timer-module panel">
-            <h4 style="color: var(--accent); margin-bottom: 2px;"><i class="fa-solid fa-stopwatch"></i> Sequence Loop</h4>
-            <p style="font-size:0.8rem; text-align:center; margin:0; color: var(--text-muted);">Includes 15s initial Think-Time segments.</p>
+            <h4 style="color: var(--accent); margin-bottom: 2px; font-size: 1rem;"><i class="fa-solid fa-stopwatch"></i> Sequence Loop</h4>
             
             <div class="interval-stepper-container">
-                <span class="timer-label" style="font-size:0.8rem; color:#fff;">Total Intervals:</span>
-                <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="timer-label" style="font-size:0.8rem; color:#fff;">Active Intervals:</span>
+                <div style="display: flex; align-items: center; gap: 6px;">
                     <button class="timer-adjust-btn" onclick="modifyIntervalTotalCount(-1)"><i class="fa-solid fa-minus"></i></button>
-                    <strong id="manual-interval-value-lbl" style="font-family:'Poppins', sans-serif; font-size:1.1rem; color:var(--accent);">2</strong>
+                    <strong id="manual-interval-value-lbl" style="font-family:'Poppins', sans-serif; font-size:1.05rem; color:var(--accent);">2</strong>
                     <button class="timer-adjust-btn" onclick="modifyIntervalTotalCount(1)"><i class="fa-solid fa-plus"></i></button>
                 </div>
             </div>
@@ -457,12 +703,11 @@
 
             <div class="timer-controls">
                 <div class="control-row">
-                    <button class="btn btn-sm" style="flex:1;" id="start-pause-btn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> Start</button>
-                    <button class="btn btn-sm" style="border-color:#ff6b6b; color:#ff6b6b;" onclick="resetTimer()"><i class="fa-solid fa-undo"></i> Reset</button>
+                    <button class="btn btn-sm" style="flex:1; padding: 5px;" id="start-pause-btn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> Start</button>
+                    <button class="btn btn-sm" style="border-color:#ff6b6b; color:#ff6b6b; padding: 5px;" onclick="resetTimer()"><i class="fa-solid fa-undo"></i> Reset</button>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 5px; width: 100%;">
-                    <span class="live-label" style="text-align: left;">Audio Track Mixer</span>
+                <div style="display: flex; flex-direction: column; gap: 4px; width: 100%;">
                     <select id="ambient-menu" class="audio-menu-dropdown" onchange="changeAmbientTrack()">
                         <option value="5yx6BWlEVcY">Option 1: Lofi Beats (Radio Live)</option>
                         <option value="mdJU5ogrPMY">Option 2: Classical Music</option>
@@ -473,7 +718,7 @@
                     </select>
                 </div>
 
-                <button class="btn btn-sm" style="border-color: var(--pink); color: var(--pink); width: 100%; margin-top: 2px;" id="mute-btn" onclick="toggleMute()">
+                <button class="btn btn-sm" style="border-color: var(--pink); color: var(--pink); width: 100%; padding: 4px; font-size: 0.85rem;" id="mute-btn" onclick="toggleMute()">
                     <i class="fa-solid fa-volume-high"></i> Music Status: Playing
                 </button>
 
@@ -483,13 +728,14 @@
             </div>
         </div>
 
-        <div class="question-module panel" style="gap: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
-                <h4 style="font-size: 0.95rem; color: var(--pink);"><i class="fa-solid fa-pen-to-square"></i> Prompt Engine</h4>
-                <button class="btn btn-sm" style="padding: 3px 8px; font-size: 0.75rem;" onclick="clearResults()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
+        <!-- Prompt Engine Panel -->
+        <div class="question-module panel" style="gap: 6px; flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+                <h4 style="font-size: 1rem; color: var(--pink);"><i class="fa-solid fa-pen-to-square"></i> Prompt Engine</h4>
+                <button class="btn btn-sm" style="padding: 2px 6px; font-size: 0.75rem;" onclick="clearResults()"><i class="fa-solid fa-arrows-rotate"></i> Clear</button>
             </div>
-            <textarea id="teacher-question" class="question-input-area" onkeyup="analyzeTeacherQuestion(this.value)" placeholder="Type lesson query text parameters here to auto-detect optimal frameworks and update classroom display live..."></textarea>
-            <div id="smart-suggestion-badge" style="display:none; font-size:0.75rem; justify-content: center; width:100%; padding:6px;"></div>
+            <textarea id="teacher-question" class="question-input-area" style="flex-grow: 1;" onkeyup="analyzeTeacherQuestion(this.value)" placeholder="Type your question or prompt here. The engine will automatically try to match it to a structure you could use."></textarea>
+            <div id="smart-suggestion-badge" class="empty-state"><i class="fa-solid fa-circle-notch"></i> No match detected yet...</div>
         </div>
     </div>
 
@@ -500,26 +746,46 @@
 <script>
     const structureMatrix = {
         pair: {
-            ANSWER: ['paircoach', 'rallycoach'],
-            SHARE: ['pairshare', 'timedpairshare', 'rallyrobin']
+            ANSWER: ['paircoach', 'rallycoach', 'matchmine'],
+            SHARE: ['pairshare', 'timedpairshare', 'rallyrobin'],
+            OTHER: ['pairfannpick']
         },
         team: {
-            ANSWER: ['teamcoach', 'roundrobinconsensus'],
-            SHARE: ['singleroundrobin', 'timedroundrobin', 'continuousroundrobin']
+            ANSWER: ['teamcoach', 'roundrobinconsensus', 'allrecordconsensus'],
+            SHARE: ['singleroundrobin', 'timedroundrobin', 'continuousroundrobin', 'jotthoughts', 'talkingchips'],
+            OTHER: ['teamfannpick', 'findthefiction', 'spendabuck', 'oddoneout']
+        },
+        class: {
+            ALL: ['insideoutsidecircle']
         }
     };
 
     const structures = {
-        paircoach: { title: "Pair Coach", goal: "ANSWER", type: "pair", desc: "One partner answers or performs.", defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: The teacher assigns a task or problem. One partner is designated as the \"Player\" and the other as the \"Coach.\"", "Step 2: The Player answers the question or performs the task aloud.", "Step 3: The Coach watches, listens, checks for accuracy, offers guidance if needed, and provides praise when completed.", "Step 4: Roles reverse for the next specific task or segment."] },
-        rallycoach: { title: "Rally Coach", goal: "ANSWER", type: "pair", desc: "Partners take multiple turns.", defaultTime: 90, defaultIntervals: 2, steps: ["Step 1: Partner A solves a problem or answers a question aloud.", "Step 2: Partner B listens carefully, checks the answer, coaches Partner A if an error is made, and praises the correct effort.", "Step 3: Partner B solves the next problem or answers the next question aloud.", "Step 4: Partner A listens, checks, coaches if necessary, and praises.", "Step 5: Partners continue to alternate roles back and forth for the remaining problems."] },
-        pairshare: { title: "Pair Share", goal: "SHARE", type: "pair", desc: "Both partners share a short response.", defaultTime: 45, defaultIntervals: 2, steps: ["Step 1: The teacher provides a prompt and allows a moment of individual think time.", "Step 2: Partner A shares their response or thoughts with Partner B.", "Step 3: Partner B shares their response or thoughts with Partner A."] },
-        timedpairshare: { title: "Timed Pair Share", goal: "SHARE", type: "pair", desc: "Both partners share a timed response.", defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: The teacher poses a question and specifies a time limit (e.g., 60 seconds per person).", "Step 2: Partner A shares for the entire designated time while Partner B listens actively without interrupting.", "Step 3: The teacher calls time, and Partner B gives a specific compliment or thank-you to Partner A.", "Step 4: Roles switch. Partner B shares for the same amount of time while A listens.", "Step 5: Partner A gives a specific compliment or thank-you to Partner B."] },
-        rallyrobin: { title: "Rally Robin", goal: "SHARE", type: "pair", desc: "Partners take multiple turns.", defaultTime: 15, defaultIntervals: 2, steps: ["Step 1: The teacher provides a topic or prompt that has multiple short answers, a list of items, or brief ideas.", "Step 2: Partner A shares one short response or idea.", "Step 3: Partner B shares one short response or idea.", "Step 4: Partners continue to alternate rapidly back and forth (A, B, A, B) until the teacher calls time."] },
-        teamcoach: { title: "Team Coach", goal: "ANSWER", type: "team", desc: "One teammate answers or performs.", defaultTime: 90, defaultIntervals: 4, steps: ["Step 1: One teammate is designated to answer a question or perform a task for the team.", "Step 2: This individual teammate works through the task aloud.", "Step 3: The other three teammates act as \"Coaches\"—they listen, check for understanding, provide hints if the teammate gets stuck, and celebrate the correct outcome.", "Step 4: The \"Player\" role rotates to a new teammate for the next task."] },
-        roundrobinconsensus: { title: "Round Robin Consensus", goal: "ANSWER", type: "team", desc: "Each teammate answers and other teammates check.", defaultTime: 120, defaultIntervals: 4, steps: ["Step 1: Teammate 1 shares an answer or idea regarding a problem.", "Step 2: The team discusses the answer to ensure everyone agrees, clarifies misconceptions, or modifies the response.", "Step 3: Once a team consensus is reached, all teammates write the agreed-upon answer on their individual papers.", "Step 4: The rotation moves to Teammate 2 to pitch the next answer, repeating the consensus cycle."] },
-        singleroundrobin: { title: "Single Round Robin", goal: "SHARE", type: "team", desc: "Each teammate shares a short response.", defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: The teacher poses a question or prompt.", "Step 2: Teammate 1 shares their short response.", "Step 3: Moving clockwise, Teammate 2 shares their response.", "Step 4: Teammate 3 shares their response.", "Step 5: Teammate 4 shares their response, ending the single rotation around the table."] },
-        timedroundrobin: { title: "Timed Round Robin", goal: "SHARE", type: "team", desc: "Each teammate shares a timed response.", defaultTime: 60, defaultIntervals: 4, steps: ["Step 1: The teacher poses a question and announces a set time limit per person (e.g., 30 seconds).", "Step 2: Teammate 1 shares for the full time limit while the rest of the team listens.", "Step 3: The timer sounds, and the team gives a quick cheer or word of appreciation.", "Step 4: The timer resets, and Teammate 2 shares. The process repeats sequentially for Teammates 3 and 4."] },
-        continuousroundrobin: { title: "Continuous Round Robin", goal: "SHARE", type: "team", desc: "Each teammate takes multiple turns.", defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: The teacher poses a prompt that allows for extensive brainstorming or multiple responses.", "Step 2: Teammate 1 shares one brief answer or idea.", "Step 3: Moving clockwise, Teammates 2, 3, and 4 each share one brief answer in turn.", "Step 4: Instead of stopping after Teammate 4, the rotation immediately returns to Teammate 1.", "Step 5: The team continues to cycle through the numbers (1, 2, 3, 4, 1, 2, 3, 4...) adding ideas until the teacher calls time."] }
+        paircoach: { title: "Pair Coach", goal: "ANSWER", type: "pair", isOrange: false, defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: One partner is the \"Player\" and the other is the \"Coach.\"", "Step 2: The Player answers the problem out loud.", "Step 3: The Coach listens, checks for accuracy, gives hints, and praises.", "Step 4: Switch roles for the next step of the problem."] },
+        rallycoach: { title: "Rally Coach", goal: "ANSWER", type: "pair", isOrange: false, defaultTime: 90, defaultIntervals: 2, steps: ["Step 1: Partner A solves a problem out loud.", "Step 2: Partner B checks the work, coaches if there is a mistake, and praises.", "Step 3: Partner B solves the next problem out loud.", "Step 4: Partner A listens, checks, coaches, and praises.", "Step 5: Keep trading places back and forth."] },
+        matchmine: { title: "Match-Mine", goal: "ANSWER", type: "pair", isOrange: true, defaultTime: 180, defaultIntervals: 1, steps: ["Step 1: Put a divider between your workspaces so you can't see each other's papers.", "Step 2: The Sender arranges items secretly on their grid map.", "Step 3: The Sender talks through the layout using clear direction words.", "Step 4: The Receiver listens and moves items to match the layout.", "Step 5: Take down the barrier to see if your layouts match perfectly!"] },
+        
+        pairshare: { title: "Pair Share", goal: "SHARE", type: "pair", isOrange: false, defaultTime: 45, defaultIntervals: 2, steps: ["Step 1: Read the topic prompt and take a moment to think quietly.", "Step 2: Partner A shares their full answer and thoughts with Partner B.", "Step 3: Partner B shares their full answer and thoughts with Partner A."] },
+        timedpairshare: { title: "Timed Pair Share", goal: "SHARE", type: "pair", isOrange: false, defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: Listen to the prompt. The teacher will set a specific time limit.", "Step 2: Partner A shares for the full time while Partner B listens carefully.", "Step 3: Switch places! Partner B shares for the exact same amount of time."] },
+        rallyrobin: { title: "Rally Robin", goal: "SHARE", type: "pair", isOrange: false, defaultTime: 15, defaultIntervals: 2, steps: ["Step 1: Listen to the topic. It will have lots of short answers.", "Step 2: Partner A shares one quick idea or item.", "Step 3: Partner B shares one quick idea or item.", "Step 4: Keep bouncing ideas back and forth fast until time runs out."] },
+        pairfannpick: { title: "Pair Fan-N-Pick", goal: "OTHER", type: "pair", isOrange: true, defaultTime: 180, defaultIntervals: 1, steps: ["Step 1: Partner A fans out the cards and says, \"Fan and pick!\"", "Step 2: Partner B picks a card, reads it out loud, and takes a moment to think.", "Step 3: Partner B explains their full answer.", "Step 4: Partner A listens, checks, helps out, and praises them."] },
+
+        teamcoach: { title: "Team Coach", goal: "ANSWER", type: "team", isOrange: false, defaultTime: 90, defaultIntervals: 4, steps: ["Step 1: One student at the table is chosen to be the \"Player.\"", "Step 2: The Player works through the problem or question out loud.", "Step 3: The other three teammates act as Coaches to check work and celebrate.", "Step 4: Pass the Player role clockwise around the table for the next task."] },
+        roundrobinconsensus: { title: "Round Robin Consensus", goal: "ANSWER", type: "team", isOrange: false, defaultTime: 120, defaultIntervals: 4, steps: ["Step 1: Teammate 1 shares their answer and details about the problem.", "Step 2: The table talks about the idea to make sure everyone agrees.", "Step 3: Once the whole table agrees on the answer, everyone writes it down."] },
+        allrecordconsensus: { title: "All Record Consensus", goal: "ANSWER", type: "team", isOrange: true, defaultTime: 120, defaultIntervals: 4, steps: ["Step 1: Listen to the problem. Everyone puts their pencils in the middle of the table.", "Step 2: Teammate 1 shares their answers and talks the group through it.", "Step 3: The table discusses the work until everyone totally agrees.", "Step 4: Teammate 1 calls out \"Record!\" and everyone picks up their pencil to write."] },
+
+        singleroundrobin: { title: "Single Round Robin", goal: "SHARE", type: "team", isOrange: false, defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: Listen to the question or prompt from the teacher.", "Step 2: Teammate 1 shares their short answer out loud.", "Step 3: Move clockwise around the circle: Teammates 2, 3, and 4 each take a turn to share."] },
+        timedroundrobin: { title: "Timed Round Robin", goal: "SHARE", type: "team", isOrange: false, defaultTime: 60, defaultIntervals: 4, steps: ["Step 1: Listen to the prompt. Each person gets a fixed timer to talk.", "Step 2: Teammate 1 shares for their full time while the table listens.", "Step 3: Repeat the countdown clockwise for every single person at the table."] },
+        continuousroundrobin: { title: "Continuous Round Robin", goal: "SHARE", type: "team", isOrange: false, defaultTime: 45, defaultIntervals: 4, steps: ["Step 1: Listen to the prompt. This activity is built for rapid brainstorming.", "Step 2: Teammate 1 shares one fast answer or sentence.", "Step 3: Move clockwise to the next person, looping around the table until time is up."] },
+        jotthoughts: { title: "Jot Thoughts", goal: "SHARE", type: "team", isOrange: true, defaultTime: 90, defaultIntervals: 1, steps: ["Step 1: Listen to the prompt. Grab a stack of small paper slips.", "Step 2: Everyone works at once! Call out an idea out loud.", "Step 3: Write your idea on a slip and drop it in the center of the table.", "Step 4: Try to fill up the middle of the table with as many unique ideas as you can!"] },
+        talkingchips: { title: "Talking Chips", goal: "SHARE", type: "team", isOrange: true, defaultTime: 90, defaultIntervals: 1, steps: ["Step 1: Everyone at the table gets the exact same number of tokens or chips.", "Step 2: The group receives a big question or discussion topic.", "Step 3: To share an idea, you must put one of your chips into the center pool.", "Step 4: If you run out of chips, you must wait until everyone else has used theirs."] },
+
+        teamfannpick: { title: "Fan-N-Pick", goal: "OTHER", type: "team", isOrange: true, defaultTime: 60, defaultIntervals: 4, steps: ["Step 1: Student 1 fans the cards out and says: \"Fan and pick any card you like!\"", "Step 2: Student 2 picks a card, reads it out loud, and lets everyone think.", "Step 3: Student 3 answers the question out loud and explains their choice.", "Step 4: Student 4 checks the answer, coaches if needed, and leads a team cheer!"] },
+        findthefiction: { title: "Find the Fiction", goal: "OTHER", type: "team", isOrange: true, defaultTime: 60, defaultIntervals: 4, steps: ["Step 1: Write down two things that are true about yourself and one lie.", "Step 2: Student 1 stands up and reads their three statements out loud.", "Step 3: The teammates whisper together to vote on which statement is the lie.", "Step 4: The group guesses, and Student 1 reveals the funny truth!"] },
+        spendabuck: { title: "Spend-A-Buck", goal: "OTHER", type: "team", isOrange: true, defaultTime: 30, defaultIntervals: 1, steps: ["Step 1: Make a clear list of all your team's choices on a single paper.", "Step 2: Everyone gets four imaginary quarters to spend on the ideas.", "Step 3: Spend your quarters across the items at the exact same time.", "Step 4: Add up the money for each option. The item with the most coins wins!"] },
+        oddoneout: { title: "Odd One Out", goal: "OTHER", type: "team", isOrange: true, defaultTime: 150, defaultIntervals: 1, steps: ["Step 1: Look at the four items. Three of them share a special connection.", "Step 2: After quiet thinking time, take turns naming which one doesn't belong.", "Step 3: Explain your reasons to the table to build a final team agreement."] },
+
+        insideoutsidecircle: { title: "Inside-Outside Circle", goal: "CLASS", type: "class", isOrange: true, defaultTime: 60, defaultIntervals: 2, steps: ["Step 1: Half the class forms an inner circle facing out; the rest form an outer circle facing in.", "Step 2: High-five your partner! Listen to the question and let the inside circle share first.", "Step 3: Switch roles, praise your partner, and rotate circles when the teacher gives the signal!"] }
     };
 
     const praises = [
@@ -536,9 +802,107 @@
         "High Five, Low Five: High five high, then swing low for second one."
     ];
 
+    const preloadedQuestions = [
+        { text: "What is your favorite video game to play when you just want to relax?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could have any wild animal as a pet, completely tamed, what would it be?", type: "pair", structure: "pairshare" },
+        { text: "Would you rather always have to speak in rhymes or always have to speak in a whisper?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the best topping to put on a slice of pizza?", type: "team", structure: "singleroundrobin" },
+        { text: "If you could build a secret room in your house, what would you put inside it?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is a skill or hobby you have always wanted to learn but haven't tried yet?", type: "pair", structure: "pairshare" },
+        { text: "Would you rather live in a world that is always freezing cold or always boiling hot?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the funniest movie or TV show you have ever seen?", type: "team", structure: "singleroundrobin" },
+        { text: "If you could trade lives with any cartoon character for a single day, who would it be?", type: "pair", structure: "rallyrobin" },
+        { text: "What is your absolute biggest pet peeve?", type: "team", structure: "continuousroundrobin" },
+        { text: "If you were handed $5,000 right now, what is the very first thing you would buy?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather be able to fly at 5 miles per hour or run at 50 miles per hour?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the best snack to eat while watching a movie?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could instantly speak any language fluently, which one would you choose?", type: "pair", structure: "pairshare" },
+        { text: "What is something you are really looking forward to doing this weekend?", type: "team", structure: "continuousroundrobin" },
+        { text: "Would you rather have a pet dinosaur the size of a dog or a pet dog the size of a dinosaur?", type: "pair", structure: "timedpairshare" },
+        { text: "What do you think is the hardest part about being a middle school student?", type: "team", structure: "singleroundrobin" },
+        { text: "If you could create a brand new school holiday, what would it be called and how would we celebrate it?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is your favorite song to blast when you are in a great mood?", type: "pair", structure: "rallyrobin" },
+        { text: "Would you rather always be 20 minutes early to everything or 10 minutes late?", type: "pair", structure: "timedpairshare" },
+        { text: "What is a hidden talent you have that not many people in this room know about?", type: "pair", structure: "pairshare" },
+        { text: "If your life was a movie, what would the title of the movie be?", type: "team", structure: "singleroundrobin" },
+        { text: "What is the most memorable or unique gift you have ever received?", type: "pair", structure: "rallyrobin" },
+        { text: "Would you rather never be able to use a smartphone again or never be able to watch TV again?", type: "pair", structure: "timedpairshare" },
+        { text: "Who is a person in your life that you really look up to or admire?", type: "team", structure: "continuousroundrobin" },
+        { text: "If you could design a new amusement park ride, what would it do?", type: "team", structure: "singleroundrobin" },
+        { text: "What is your favorite subject in school this year, and why?", type: "pair", structure: "pairshare" },
+        { text: "Would you rather explore the deepest depths of the ocean or the furthest edges of outer space?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the best piece of advice anyone has ever given you?", type: "team", structure: "continuousroundrobin" },
+        { text: "If you were trapped inside a department store overnight, what is the first thing you would do?", type: "team", structure: "singleroundrobin" },
+        { text: "What never fails to make you laugh out loud when you are having a bad day?", type: "pair", structure: "rallyrobin" },
+        { text: "Would you rather have to read minds but only hear bad thoughts, or never know what anyone is thinking?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the furthest place away from home you have ever traveled?", type: "pair", structure: "pairshare" },
+        { text: "If you could open your own restaurant, what kind of food would you serve?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is something you accomplished recently that you are genuinely proud of?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather only eat your favorite food for every meal or never eat your favorite food again?", type: "pair", structure: "timedpairshare" },
+        { text: "What is your favorite clothing item or pair of shoes that you own?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could master any musical instrument instantly without practicing, what would it be?", type: "pair", structure: "pairshare" },
+        { text: "What do you think makes someone a truly great and loyal friend?", type: "team", structure: "continuousroundrobin" },
+        { text: "Would you rather have a permanent itch on your foot or a permanent itch on your nose?", type: "pair", structure: "timedpairshare" },
+        { text: "If you could bring one fictional item into real life, what would it be?", type: "pair", structure: "rallyrobin" },
+        { text: "What is your favorite way to spend a rainy Saturday afternoon?", type: "team", structure: "singleroundrobin" },
+        { text: "What is a phrase or word you find yourself saying way too often?", type: "pair", structure: "pairshare" },
+        { text: "Would you rather have to wear wet socks all day or an incredibly itchy sweater?", type: "pair", structure: "timedpairshare" },
+        { text: "If you could shrink any massive animal down to the size of a mouse to carry in your pocket, what would it be?", type: "team", structure: "continuousroundrobin" },
+        { text: "What role do you usually play when working on a group project?", type: "team", structure: "singleroundrobin" },
+        { text: "What is your favorite ice cream flavor and what toppings are absolutely required?", type: "pair", structure: "rallyrobin" },
+        { text: "Would you rather be the smartest person in the room or the funniest person in the room?", type: "pair", structure: "timedpairshare" },
+        { text: "If you could travel back in time to any era for 24 hours, where and when would you go?", type: "pair", structure: "pairshare" },
+        { text: "What is something you used to care a lot about when you were younger that seems silly now?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is the best fast food restaurant chain, hands down?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather be able to talk to animals or be able to control the weather?", type: "pair", structure: "timedpairshare" },
+        { text: "What is one thing you can't leave your house without carrying with you?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could magically change our school dress code to anything, what would we all be wearing?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is a specific goal you want to achieve before this school year ends?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather be a famous Olympic athlete or a famous Hollywood director?", type: "pair", structure: "timedpairshare" },
+        { text: "What is your absolute favorite comfort food when you are feeling tired or sick?", type: "pair", structure: "pairshare" },
+        { text: "If you were invisible for a single day, what is the first thing you would do?", type: "team", structure: "continuousroundrobin" },
+        { text: "What do you appreciate most about the person sitting directly to your left right now?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather have a third eye on the back of your head or an extra thumb?", type: "pair", structure: "timedpairshare" },
+        { text: "What is a hobby or interest you are totally obsessed with right now?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could trade lives with any famous celebrity for a week, who would it be?", type: "pair", structure: "pairshare" },
+        { text: "How do you usually handle it when you get frustrated or stressed out by a hard assignment?", type: "team", structure: "continuousroundrobin" },
+        { text: "Would you rather live in a house shaped like a giant shoe or a giant banana?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the most re-watchable movie ever made?", type: "team", structure: "singleroundrobin" },
+        { text: "If you could create a new flavor of potato chip, what weird combination would you try?", type: "pair", structure: "rallyrobin" },
+        { text: "What is something our classroom could do to make everyone feel more welcome each day?", type: "team", structure: "continuousroundrobin" },
+        { text: "Would you rather always have to skip everywhere you go or sing everything you say?", type: "pair", structure: "timedpairshare" },
+        { text: "What is a skill you have that you could easily teach someone else to do in five minutes?", type: "pair", structure: "pairshare" },
+        { text: "If you were cast in a reality TV show, what would the show be about?", type: "team", structure: "singleroundrobin" },
+        { text: "What does the word \"success\" mean to you personally?", type: "team", structure: "continuousroundrobin" },
+        { text: "Would you rather be able to breathe underwater or be completely fireproof?", type: "pair", structure: "timedpairshare" },
+        { text: "What is the best piece of news you have heard recently?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could create a new school subject that everyone had to take, what would it be?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is something you've failed at before that actually taught you an important lesson?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather lose your phone for a week or lose your shoes for a week?", type: "pair", structure: "timedpairshare" },
+        { text: "How do you prefer to receive praise or recognition when you do a great job?", type: "pair", structure: "pairshare" },
+        { text: "If you had to survive a zombie apocalypse, which three people in this room would you want on your team?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is a quality about yourself that you hope never changes as you grow up?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather have the ability to teleport anywhere or time travel to the past?", type: "team", structure: "singleroundrobin" },
+        { text: "What is one thing you hope people remember about you after you graduate from this school?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather always have blue hair or always have green teeth?", type: "pair", structure: "timedpairshare" },
+        { text: "What is something you're grateful for today, even if it's something small?", type: "pair", structure: "rallyrobin" },
+        { text: "If your pet could suddenly speak human language for ten minutes, what do you think they would say to you?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is the most important ingredient for making a group project successful?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather only be able to see in black and white or never be able to hear music again?", type: "pair", structure: "timedpairshare" },
+        { text: "What is something a teacher can do to show they genuinely care about their students?", type: "pair", structure: "pairshare" },
+        { text: "If you could give one piece of advice to next year's incoming students, what would it be?", type: "team", structure: "continuousroundrobin" },
+        { text: "What is the coolest science experiment or project you have ever done?", type: "team", structure: "singleroundrobin" },
+        { text: "Would you rather have to live without sweets or live without salty snacks for the rest of your life?", type: "pair", structure: "timedpairshare" },
+        { text: "What is your favorite board game or card game to play with your family or friends?", type: "pair", structure: "rallyrobin" },
+        { text: "If you could name a newly discovered planet after anything, what would you name it?", type: "team", structure: "continuousroundrobin" },
+        { text: "Are you a morning person or a night owl?", type: "pair", structure: "pairshare" },
+        { text: "What is the very first thing you want to do as soon as the final bell rings today?", type: "team", structure: "singleroundrobin" }
+    ];
+
     let activeGrouping = 'pair';
-    let activeObjective = 'ANSWER';
+    let activeObjective = 'SHARE';
     let currentStructureTab = '';
+    let selectedCommunityQuestion = null;
     
     let configuredTimerCount = 2;
     let activeTimerIndex = 0; 
@@ -548,37 +912,25 @@
     let isTimerRunning = false;
     let isMusicMuted = false;
 
+    let lastManualSeatSelection = 0; 
+    let lastManualPartnerSelection = ""; 
     let ytPlayer = null;
 
     function onYouTubeIframeAPIReady() {
         const targetVideoId = document.getElementById('ambient-menu').value;
         ytPlayer = new YT.Player('yt-visible-player', {
-            height: '1',
-            width: '1',
-            videoId: targetVideoId,
-            playerVars: {
-                'controls': 0,
-                'disablekb': 1,
-                'rel': 0,
-                'modestbranding': 1,
-                'enablejsapi': 1,
-                'origin': window.location.origin
-            },
-            events: {
-                'onReady': onPlayerReady
-            }
+            height: '1', width: '1', videoId: targetVideoId,
+            playerVars: { 'controls': 0, 'disablekb': 1, 'rel': 0, 'modestbranding': 1, 'enablejsapi': 1, 'origin': window.location.origin },
+            events: { 'onReady': onPlayerReady }
         });
     }
 
-    function onPlayerReady(event) {
-        if (!isMusicMuted) ytPlayer.setVolume(25);
-    }
+    function onPlayerReady(event) { if (!isMusicMuted) ytPlayer.setVolume(25); }
 
     function changeAmbientTrack() {
         const targetVideoId = document.getElementById('ambient-menu').value;
         if (ytPlayer && typeof ytPlayer.loadVideoById === 'function') {
             ytPlayer.loadVideoById(targetVideoId);
-            // If the timer isn't ready for music yet, pause it immediately
             if (!isTimerRunning || activeTimerIndex === 0) {
                 setTimeout(() => { ytPlayer.pauseVideo(); }, 150);
             }
@@ -592,29 +944,97 @@
         }
     }
 
-    function stopLofiMusic() {
-        if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-            ytPlayer.pauseVideo();
-        }
-    }
+    function stopLofiMusic() { if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') ytPlayer.pauseVideo(); }
 
     function toggleMute() {
         const muteBtn = document.getElementById('mute-btn');
         if (isMusicMuted) {
             isMusicMuted = false;
             muteBtn.innerHTML = `<i class="fa-solid fa-volume-high"></i> Music Status: Playing`;
-            muteBtn.style.borderColor = "var(--pink)";
-            muteBtn.style.color = "var(--pink)";
+            muteBtn.style.borderColor = "var(--pink)"; muteBtn.style.color = "var(--pink)";
             if (ytPlayer && typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(25);
             if (isTimerRunning && activeTimerIndex > 0) startLofiMusic();
         } else {
             isMusicMuted = true;
             muteBtn.innerHTML = `<i class="fa-solid fa-volume-xmark"></i> Music Status: MUTED`;
-            muteBtn.style.borderColor = "var(--text-muted)";
-            muteBtn.style.color = "var(--text-muted)";
+            muteBtn.style.borderColor = "var(--text-muted)"; muteBtn.style.color = "var(--text-muted)";
             if (ytPlayer && typeof ytPlayer.setVolume === 'function') ytPlayer.setVolume(0);
             stopLofiMusic();
         }
+    }
+
+    function generateCommunityQuestion() {
+        const randomQ = preloadedQuestions[Math.floor(Math.random() * preloadedQuestions.length)];
+        
+        selectedCommunityQuestion = {
+            text: randomQ.text,
+            type: randomQ.type,
+            structure: randomQ.structure
+        };
+        
+        const display = document.getElementById('community-question-display');
+        display.innerText = randomQ.text;
+        display.style.fontStyle = "normal";
+        display.style.color = "#ffffff";
+        
+        document.getElementById('push-community-btn').style.display = "block";
+    }
+
+    function pushCommunityQuestionToHub() {
+        if (!selectedCommunityQuestion) return;
+        
+        const displayBox = document.getElementById('classroom-giant-prompt-lbl');
+        displayBox.innerText = selectedCommunityQuestion.text;
+        
+        setGrouping(selectedCommunityQuestion.type);
+        
+        const structLookup = structures[selectedCommunityQuestion.structure];
+        if (structLookup && structLookup.goal) {
+            setObjective(structLookup.goal);
+        }
+        
+        selectStructure(selectedCommunityQuestion.structure);
+        document.getElementById('teacher-question').value = '';
+        
+        const badge = document.getElementById('smart-suggestion-badge');
+        badge.className = 'empty-state';
+        badge.innerHTML = `<i class="fa-solid fa-circle-notch"></i> No match detected yet...`;
+    }
+
+    function toggleCoachingSubsystem(mode) {
+        const factsBox = document.getElementById('coaching-box-facts');
+        const skillsBox = document.getElementById('coaching-box-skills');
+        const factsBtn = document.getElementById('coaching-btn-facts');
+        const skillsBtn = document.getElementById('coaching-btn-skills');
+
+        if (mode === 'facts') {
+            if (factsBox.style.display === 'block') {
+                factsBox.style.display = 'none';
+                factsBtn.classList.remove('active');
+            } else {
+                factsBox.style.display = 'block';
+                skillsBox.style.display = 'none';
+                factsBtn.classList.add('active');
+                skillsBtn.classList.remove('active');
+            }
+        } else {
+            if (skillsBox.style.display === 'block') {
+                skillsBox.style.display = 'none';
+                skillsBtn.classList.remove('active');
+            } else {
+                skillsBox.style.display = 'block';
+                factsBox.style.display = 'none';
+                skillsBtn.classList.add('active');
+                factsBtn.classList.remove('active');
+            }
+        }
+    }
+
+    function hideCoachingSubsystemElements() {
+        document.getElementById('coaching-box-facts').style.display = 'none';
+        document.getElementById('coaching-box-skills').style.display = 'none';
+        document.getElementById('coaching-btn-facts').classList.remove('active');
+        document.getElementById('coaching-btn-skills').classList.remove('active');
     }
 
     function updateSynchronizedPresenterHUD() {
@@ -622,20 +1042,38 @@
         clearHighlights();
 
         if (!isTimerRunning && activeTimerIndex === 0) {
-            presenterBox.innerText = "---";
+            if (lastManualSeatSelection > 0) {
+                presenterBox.innerText = "Seat Number " + lastManualSeatSelection;
+                document.getElementById(`seat-${lastManualSeatSelection}`).classList.add('highlight');
+            } else if (lastManualPartnerSelection !== "") {
+                presenterBox.innerText = lastManualPartnerSelection;
+                if(lastManualPartnerSelection === "Partner A") {
+                    document.getElementById('seat-1').classList.add('highlight');
+                    document.getElementById('seat-2').classList.add('highlight');
+                } else {
+                    document.getElementById('seat-3').classList.add('highlight');
+                    document.getElementById('seat-4').classList.add('highlight');
+                }
+            }
             return;
         }
 
         if (activeTimerIndex === 0) {
-            presenterBox.innerText = "Perfect Silence";
-            return;
+            presenterBox.innerText = "Perfect Silence"; return;
         }
 
         const adjustedTurnIndex = activeTimerIndex - 1;
         const currentMode = structures[currentStructureTab] || { type: 'pair' };
 
+        if (currentMode.type === 'class') {
+            presenterBox.innerText = "Whole Class Mix"; return;
+        }
+
         if (currentMode.type === 'pair') {
-            if (adjustedTurnIndex % 2 === 0) {
+            let startingSide = (lastManualPartnerSelection === "Partner B") ? 1 : 0; 
+            let targetSideIndex = (adjustedTurnIndex + startingSide) % 2;
+
+            if (targetSideIndex === 0) {
                 presenterBox.innerText = "Partner A";
                 document.getElementById('seat-1').classList.add('highlight');
                 document.getElementById('seat-2').classList.add('highlight');
@@ -645,7 +1083,9 @@
                 document.getElementById('seat-4').classList.add('highlight');
             }
         } else {
-            const targetSeatNum = (adjustedTurnIndex % 4) + 1;
+            let startingSeatOffset = (lastManualSeatSelection > 0) ? (lastManualSeatSelection - 1) : 0;
+            const targetSeatNum = ((adjustedTurnIndex + startingSeatOffset) % 4) + 1;
+            
             presenterBox.innerText = `Seat Number ${targetSeatNum}`;
             document.getElementById(`seat-${targetSeatNum}`).classList.add('highlight');
         }
@@ -682,32 +1122,40 @@
             voiceBox.innerText = "Level 0: Perfect Silence (Think Time)"; voiceBox.style.color = "var(--pink)"; return;
         }
         if (activeGrouping === 'pair') {
-            voiceBox.innerText = "Level 1: Whisper Voices (Pair Shares)"; voiceBox.style.color = "var(--teal)";
+            voiceBox.innerText = "Level 1: Whisper Voices"; voiceBox.style.color = "var(--teal)";
+        } else if (activeGrouping === 'team') {
+            voiceBox.innerText = "Level 2: Table Talk"; voiceBox.style.color = "var(--accent)";
         } else {
-            voiceBox.innerText = "Level 2: Table Talk (Team Consensus)"; voiceBox.style.color = "var(--accent)";
+            voiceBox.innerText = "Level 3: Whole Room Scale"; voiceBox.style.color = "var(--orange)";
         }
     }
 
     function analyzeTeacherQuestion(text) {
         const displayBox = document.getElementById('classroom-giant-prompt-lbl');
-        displayBox.innerText = text ? text.toUpperCase() : "WAITING FOR TEACHER INPUT...";
+        displayBox.innerText = text ? text : "Waiting for teacher input...";
 
         const badge = document.getElementById('smart-suggestion-badge');
-        if (!text || text.trim().length < 5) { badge.style.display = 'none'; return; }
+        if (!text || text.trim().length < 5) { 
+            badge.className = 'empty-state';
+            badge.innerHTML = `<i class="fa-solid fa-circle-notch"></i> No match detected yet...`;
+            return; 
+        }
 
         const lowerText = text.toLowerCase();
         let decisionGoal = "SHARE"; let predictedKey = "timedpairshare"; 
 
-        const objectiveKeywords = ['calculate', 'solve', 'simplify', 'equation', 'identify', 'define'];
+        const objectiveKeywords = ['calculate', 'solve', 'simplify', 'equation', 'identify', 'define', 'math', 'answers'];
         let objectiveScore = 0; objectiveKeywords.forEach(kw => { if (lowerText.includes(kw)) objectiveScore += 2; });
 
         if (objectiveScore > 0) {
             decisionGoal = "ANSWER"; predictedKey = (activeGrouping === 'pair') ? 'rallycoach' : 'roundrobinconsensus';
         }
 
-        badge.style.display = 'inline-flex';
+        badge.className = 'active-state';
         badge.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> Match: ${structures[predictedKey].title}`;
-        setObjective(decisionGoal); selectStructure(predictedKey);
+        
+        if (activeGrouping !== 'class') setObjective(decisionGoal);
+        selectStructure(predictedKey);
     }
 
     function triggerBeepSound() {
@@ -716,13 +1164,32 @@
         osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.3);
     }
 
-    window.onload = function() { renderFilterMatrix(); updateLiveVoiceHUD(); };
+    window.onload = function() { 
+        renderFilterMatrix(); 
+        updateLiveVoiceHUD(); 
+    };
 
     function setGrouping(groupKey) {
         activeGrouping = groupKey;
         const buttons = document.getElementById('group-tabs').getElementsByTagName('button');
         buttons[0].className = `btn ${groupKey === 'pair' ? 'active' : ''}`;
         buttons[1].className = `btn ${groupKey === 'team' ? 'active' : ''}`;
+        buttons[2].className = `btn btn-orange-mode ${groupKey === 'class' ? 'active' : ''}`;
+        
+        const audienceDescriptor = document.getElementById('group-audience-descriptor');
+        if (groupKey === 'pair') audienceDescriptor.innerText = "Structures for Partner A and Partner B";
+        else if (groupKey === 'team') audienceDescriptor.innerText = "Structures for the entire table (Seats 1-4)";
+        else audienceDescriptor.innerText = "Structures for the entire class";
+
+        const objectivePanel = document.getElementById('objective-filter-panel');
+        if (groupKey === 'class') {
+            objectivePanel.style.display = 'none';
+        } else {
+            objectivePanel.style.display = 'block';
+            if (activeObjective === 'CLASS') activeObjective = 'ANSWER';
+        }
+        
+        currentStructureTab = '';
         renderFilterMatrix(); updateLiveVoiceHUD();
     }
 
@@ -732,39 +1199,99 @@
         const descLbl = document.getElementById('objective-descriptor-lbl');
         buttons[0].className = `btn ${objKey === 'ANSWER' ? 'active' : ''}`;
         buttons[1].className = `btn ${objKey === 'SHARE' ? 'active' : ''}`;
-        descLbl.innerText = objKey === 'ANSWER' ? "Solve problems, recall facts, perform skills." : "Share ideas, state opinions, explain thinking.";
+        buttons[2].className = `btn btn-orange-sub ${objKey === 'OTHER' ? 'active' : ''}`;
+        
+        if (objKey === 'ANSWER') descLbl.innerText = "Solve problems, recall facts, perform skills.";
+        else if (objKey === 'SHARE') descLbl.innerText = "Share ideas, state opinions, explain thinking.";
+        else descLbl.innerText = "Structures outside of the core structures"; 
+        
+        currentStructureTab = '';
         renderFilterMatrix();
     }
 
     function renderFilterMatrix() {
-        const targetKeys = structureMatrix[activeGrouping][activeObjective];
-        const container = document.getElementById('structure-tabs'); container.innerHTML = '';
+        let targetKeys = [];
+        if (activeGrouping === 'class') {
+            targetKeys = structureMatrix.class.ALL;
+        } else {
+            targetKeys = structureMatrix[activeGrouping][activeObjective] || [];
+        }
+
+        const container = document.getElementById('structure-tabs'); 
+        container.innerHTML = '';
+        
         targetKeys.forEach((key) => {
-            const btn = document.createElement('button'); btn.className = 'btn btn-sm';
-            btn.innerText = structures[key].title; btn.onclick = () => selectStructure(key);
+            const btn = document.createElement('button'); 
+            btn.innerText = structures[key].title; 
+            btn.onclick = () => selectStructure(key);
+            
+            if (structures[key].isOrange) {
+                btn.className = 'btn btn-sm orange-struct-btn';
+            } else {
+                btn.className = 'btn btn-sm';
+            }
             container.appendChild(btn);
         });
-        if(targetKeys.length > 0 && !currentStructureTab) { selectStructure(targetKeys[0]); }
+
+        if(targetKeys.length > 0 && !currentStructureTab) { 
+            selectStructure(targetKeys[0]); 
+        } else if (targetKeys.length === 0) {
+            clearRoadmapDisplay();
+        }
+    }
+
+    function clearRoadmapDisplay() {
+        document.getElementById('struct-title').innerText = "Select Context Category";
+        document.getElementById('struct-step-card-wrapper').style.display = "none";
+        document.getElementById('coaching-trigger-strip').style.display = 'none';
+        hideCoachingSubsystemElements();
     }
 
     function selectStructure(key) {
+        if (!structures[key]) return;
         currentStructureTab = key;
         const struct = structures[key];
-        const tabs = document.getElementById('structure-tabs').getElementsByTagName('button');
-        const targetKeys = structureMatrix[activeGrouping][activeObjective];
         
+        let targetKeys = [];
+        if (activeGrouping === 'class') {
+            targetKeys = structureMatrix.class.ALL;
+        } else {
+            targetKeys = structureMatrix[activeGrouping][activeObjective] || [];
+        }
+        
+        const tabs = document.getElementById('structure-tabs').getElementsByTagName('button');
         targetKeys.forEach((structKey, idx) => {
-            if(tabs[idx]) tabs[idx].className = `btn btn-sm ${structKey === key ? 'active' : ''}`;
+            if(tabs[idx]) {
+                const isOr = structures[structKey].isOrange;
+                tabs[idx].className = `btn btn-sm ${isOr ? 'orange-struct-btn' : ''} ${structKey === key ? 'active' : ''}`;
+            }
         });
 
+        document.getElementById('struct-step-card-wrapper').style.display = "flex";
         document.getElementById('struct-title').innerText = struct.title;
-        document.getElementById('struct-desc').innerText = struct.desc;
         
-        const goalTag = document.getElementById('struct-goal');
-        goalTag.innerText = struct.goal === "SHARE" ? "SHARE INFORMATION" : "ANSWER CORRECTLY";
-        goalTag.className = struct.goal === "SHARE" ? "goal-tag goal-pink" : "goal-tag goal-green";
+        const coachingStrip = document.getElementById('coaching-trigger-strip');
+        if (struct.goal === "ANSWER") {
+            coachingStrip.style.display = 'grid';
+            toggleCoachingSubsystem('facts'); 
+        } else {
+            coachingStrip.style.display = 'none';
+            hideCoachingSubsystemElements();
+        }
 
-        document.getElementById('struct-steps').innerHTML = struct.steps.map(s => `<p style="color:#e6f1ff; margin-bottom:8px;">${s}</p>`).join('');
+        const goalTag = document.getElementById('struct-goal');
+        if (struct.goal === "SHARE") {
+            goalTag.innerText = "SHARE INFORMATION"; goalTag.className = "goal-tag goal-pink";
+        } else if (struct.goal === "ANSWER") {
+            goalTag.innerText = "ANSWER CORRECTLY"; goalTag.className = "goal-tag goal-green";
+        } else if (struct.goal === "OTHER") {
+            goalTag.innerText = "OTHER"; goalTag.className = "goal-tag goal-orange";
+        } else {
+            goalTag.innerText = "CLASS COOPERATIVE"; goalTag.className = "goal-tag goal-orange";
+        }
+
+        document.getElementById('struct-steps').innerHTML = struct.steps.map(s => `<p class="roadmap-instruction-step">${s}</p>`).join('');
+
         configuredTimerCount = struct.defaultIntervals;
         document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
         buildSequentialTimerArrays(struct.defaultTime);
@@ -772,7 +1299,7 @@
 
     function modifyIntervalTotalCount(delta) {
         let proposed = configuredTimerCount + delta;
-        if (proposed < 1) proposed = 1; if (proposed > 8) proposed = 8; 
+        if (proposed < 1) proposed = 1; if (proposed > 4) proposed = 4; 
         configuredTimerCount = proposed;
         document.getElementById('manual-interval-value-lbl').innerText = configuredTimerCount;
         buildSequentialTimerArrays(timerDurations[1] || 60);
@@ -781,7 +1308,8 @@
     function buildSequentialTimerArrays(baseTimePerInterval) {
         if(isTimerRunning) toggleTimer();
         timerDurations = [15]; timerLabels = ["Think Time"];
-        for(let i = 0; i < configuredTimerCount; i++) {
+        
+        for(let i = 0; i < 4; i++) {
             timerDurations.push(baseTimePerInterval);
             timerLabels.push(`Interval #${i + 1}`);
         }
@@ -790,28 +1318,45 @@
 
     function renderTimerRows() {
         const container = document.getElementById('timers-container'); container.innerHTML = '';
+        
         timerDurations.forEach((duration, i) => {
+            const isUsedSegment = (i <= configuredTimerCount);
             const row = document.createElement('div');
             row.id = `timer-row-${i}`;
-            row.className = `individual-timer-row ${i === 0 ? 'think-time-row' : ''} ${i === activeTimerIndex ? 'active' : ''}`;
+            row.className = `individual-timer-row ${i === 0 ? 'think-time-row' : ''} ${i === activeTimerIndex && isUsedSegment ? 'active' : ''} ${!isUsedSegment ? 'inactive-segment' : ''}`;
+            
             const mins = Math.floor(duration / 60).toString().padStart(2, '0');
             const secs = (duration % 60).toString().padStart(2, '0');
-            row.innerHTML = `
-                <div class="timer-label">${timerLabels[i]}</div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, -5)"><i class="fa-solid fa-minus"></i></button>
-                    <div class="timer-display" id="display-${i}">${mins}:${secs}</div>
-                    <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, 5)"><i class="fa-solid fa-plus"></i></button>
-                </div>
-            `;
+            
+            if (i === 0) {
+                row.innerHTML = `
+                    <div class="timer-label" style="font-size: 0.85rem;">${timerLabels[i]}</div>
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, -5)"><i class="fa-solid fa-minus"></i></button>
+                        <div class="timer-display" id="display-${i}">${mins}:${secs}</div>
+                        <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, 5)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                `;
+            } else {
+                row.innerHTML = `
+                    <div class="timer-label">${timerLabels[i]}</div>
+                    <div class="timer-display" id="display-${i}" style="margin: 2px 0; color: ${isUsedSegment ? 'var(--text-muted)' : '#233554'}; font-size: 1.1rem;">${isUsedSegment ? mins + ':' + secs : 'OFF'}</div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, -5)"><i class="fa-solid fa-minus"></i></button>
+                        <button class="timer-adjust-btn" onclick="adjustSpecificTime(${i}, 5)"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                `;
+            }
             container.appendChild(row);
         });
     }
 
     function adjustSpecificTime(index, amount) {
+        if (index > configuredTimerCount) return; 
         timerDurations[index] = Math.max(0, timerDurations[index] + amount);
         if (index === 1) { for (let i = 2; i < timerDurations.length; i++) timerDurations[i] = timerDurations[1]; }
         timerDurations.forEach((duration, idx) => {
+            if (idx > configuredTimerCount) return;
             const mins = Math.floor(duration / 60).toString().padStart(2, '0');
             const secs = (duration % 60).toString().padStart(2, '0');
             if (document.getElementById(`display-${idx}`)) document.getElementById(`display-${idx}`).innerText = `${mins}:${secs}`;
@@ -844,12 +1389,11 @@
         document.getElementById(`display-${activeTimerIndex}`).innerText = "DONE!";
         document.getElementById(`timer-row-${activeTimerIndex}`).classList.remove('active');
         
-        if(activeTimerIndex + 1 < timerDurations.length) {
+        if(activeTimerIndex + 1 <= configuredTimerCount) {
             activeTimerIndex++; 
             document.getElementById(`timer-row-${activeTimerIndex}`).classList.add('active');
             if (activeTimerIndex > 0) startLofiMusic(); 
-            updateLiveVoiceHUD(); 
-            updateSynchronizedPresenterHUD();
+            updateLiveVoiceHUD(); updateSynchronizedPresenterHUD();
         } else {
             clearInterval(timerInterval); isTimerRunning = false;
             document.getElementById('start-pause-btn').innerHTML = `<i class="fa-solid fa-play"></i> Start`;
@@ -873,8 +1417,10 @@
 
     function clearResults() { 
         document.getElementById('teacher-question').value = ''; 
-        document.getElementById('classroom-giant-prompt-lbl').innerText = 'WAITING FOR TEACHER INPUT...';
-        document.getElementById('smart-suggestion-badge').style.display = 'none';
+        document.getElementById('classroom-giant-prompt-lbl').innerText = 'Waiting for teacher input...';
+        const badge = document.getElementById('smart-suggestion-badge');
+        badge.className = 'empty-state';
+        badge.innerHTML = `<i class="fa-solid fa-circle-notch"></i> No match detected yet...`;
     }
     
     function clearHighlights() { document.querySelectorAll('.seat').forEach(s => s.classList.remove('highlight')); }
@@ -884,10 +1430,29 @@
     }
     function triggerRndStudent() { 
         const raw = document.getElementById('roster-box').value.split('\n').map(n => n.trim()).filter(n => n); if(raw.length === 0) return alert("Roster empty!");
+        lastManualSeatSelection = 0; lastManualPartnerSelection = "";
         runMockAnimation("live-presenter-box", raw, () => { document.getElementById('live-presenter-box').innerText = raw[Math.floor(Math.random() * raw.length)]; }); 
     }
-    function triggerRndSeat() { const numbers = ["Seat 1", "Seat 2", "Seat 3", "Seat 4"]; runMockAnimation("live-presenter-box", numbers, () => { const idx = Math.floor(Math.random() * 4) + 1; document.getElementById('live-presenter-box').innerText = "Seat Number " + idx; document.getElementById(`seat-${idx}`).classList.add('highlight'); }); }
-    function triggerRndPartner() { const partners = ["Partner A", "Partner B"]; runMockAnimation("live-presenter-box", partners, () => { const choice = partners[Math.floor(Math.random() * partners.length)]; document.getElementById('live-presenter-box').innerText = choice; if(choice === "Partner A") { document.getElementById('seat-1').classList.add('highlight'); document.getElementById('seat-2').classList.add('highlight'); } else { document.getElementById('seat-3').classList.add('highlight'); document.getElementById('seat-4').classList.add('highlight'); } }); }
+    function triggerRndSeat() { 
+        const numbers = ["Seat 1", "Seat 2", "Seat 3", "Seat 4"]; lastManualSeatSelection = "";
+        runMockAnimation("live-presenter-box", numbers, () => { 
+            const idx = Math.floor(Math.random() * 4) + 1; lastManualSeatSelection = idx;
+            document.getElementById('live-presenter-box').innerText = "Seat Number " + idx; 
+            document.getElementById(`seat-${idx}`).classList.add('highlight'); 
+        }); 
+    }
+    function triggerRndPartner() { 
+        const partners = ["Partner A", "Partner B"]; lastManualSeatSelection = 0;
+        runMockAnimation("live-presenter-box", partners, () => { 
+            const choice = partners[Math.floor(Math.random() * partners.length)]; lastManualPartnerSelection = choice;
+            document.getElementById('live-presenter-box').innerText = choice; 
+            if(choice === "Partner A") { 
+                document.getElementById('seat-1').classList.add('highlight'); document.getElementById('seat-2').classList.add('highlight'); 
+            } else { 
+                document.getElementById('seat-3').classList.add('highlight'); document.getElementById('seat-4').classList.add('highlight'); 
+            } 
+        }); 
+    }
 </script>
 
 </body>
